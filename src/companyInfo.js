@@ -110,73 +110,95 @@ export default function CompanyInfo() {
 
     return (
 
-        <Container sx={{ display: 'flex' }}>
-            <Paper sx={{ display: "flex", height: 0 }}>
+        <Paper sx={{ display: "flex", height: 800 }}>
 
-                <Paper sx={{ height: 526, width: 200 }} >
+            <Paper sx={{ p: 5, width: 150 }} >
 
 
-                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                        <nav aria-label="main mailbox folders">
-                            <List>
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            <DynamicFormOutlinedIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Business Application" />
-                                    </ListItemButton>
-                                </ListItem>
-                                <ListItem disablePadding>
-                                    <ListItemButton>
-                                        <ListItemIcon>
-                                            < LocalActivityOutlinedIcon />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Ecosystem Activity" />
-                                    </ListItemButton>
-                                </ListItem>
-                            </List>
-                        </nav>
-                    </Box>
+                <Box sx={{ bgcolor: 'background.paper' }}>
+                    <nav aria-label="main mailbox folders">
+                        <List>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        <DynamicFormOutlinedIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Business Application" />
+                                </ListItemButton>
+                            </ListItem>
+                            <ListItem disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        < LocalActivityOutlinedIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary="Ecosystem Activity" />
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
+                    </nav>
+                </Box>
+            </Paper>
+
+            <Paper sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Paper sx={{ marginLeft: 5, marginBottom: 2 }}>
+                    <div style={{ marginLeft: 20 }}><h4>Welcome!!!</h4></div>
                 </Paper>
 
-                <Paper sx={{ p: 2, margin: 'auto', maxWidth: 700, flexGrow: 1 }}>
+                <Paper sx={{ display: 'flex', flexDirection: 'row' }}>
+                    <Paper sx={{ p: 2, marginLeft: 5, width: 150, flexGrow: 1 }}>
 
 
 
-                    <div className={classes.actionsContainer}>
+                        <div className={classes.actionsContainer}>
 
 
+                            <Box
+                                component="form"
+                                sx={{ bgcolor: 'background.paper' }}
+                                noValidate
+                                autoComplete="off"
+                            >
+                                <div className={classes.root}>
+                                    <h4>Business Application</h4>
+                                    <Stepper activeStep={activeStep} orientation="vertical">
+                                        {steps.map((label, index) => (
+                                            <Step key={label}>
+                                                <StepLabel>{label}</StepLabel>
+                                            </Step>
+                                        ))}
+                                    </Stepper>
+
+                                </div>
+                            </Box>
+
+                        </div>
+
+                    </Paper>
+
+                    <Paper sx={{ p: 5, width: 600, flexGrow: 1 }} >
                         <Box
                             component="form"
                             sx={{
-                                '& .MuiTextField-root': { m: 1, width: '25ch' },
+                                '& .MuiTextField-root': { m: 1, width: '200' },
                             }}
                             noValidate
                             autoComplete="off"
                         >
-                            <div className={classes.root}>
-                                <h1>Business Application</h1>
-                                <Stepper activeStep={activeStep} orientation="vertical">
-                                    {steps.map((label, index) => (
-                                        <Step key={label}>
-                                            <StepLabel>{label}</StepLabel>
-                                        </Step>
-                                    ))}
-                                </Stepper>
-                                <TextField id="outlined-basic" label="Company Name" variant="outlined" />
-                                <TextField id="outlined-basic" select label="Business Entity" value="Sole Proprietaryship/Single" variant="outlined" />
-                                <TextField id="outlined-basic" label="Company Email" variant="outlined" />
-                                <TextField id="outlined-basic" label="Company Phone Number" variant="outlined" />
-                                <TextField id="outlined-basic" label="Company Adress Line1" variant="outlined" />
-                                <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined" />
-                                <TextField id="outlined-basic" label="City" variant="outlined" />
-                                <TextField id="outlined-basic" label="State" variant="outlined" />
-                                <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
-                                <TextField id="outlined-basic" label="Country" variant="outlined" />
+                            <h4>Company Informaation Application</h4>
+                            <TextField id="outlined-basic" label="Company Name" variant="outlined" />
+                            <TextField id="outlined-basic" select label="Business Entity" value="Sole Proprietaryship/Single" variant="outlined" />
+                            <TextField id="outlined-basic" label="Company Email" variant="outlined" />
+                            <TextField id="outlined-basic" label="Company Phone Number" variant="outlined" />
+                            <TextField id="outlined-basic" label="Company Adress Line1" variant="outlined" />
+                            <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined" />
+                            <TextField id="outlined-basic" label="City" variant="outlined" />
+                            <TextField id="outlined-basic" label="State" variant="outlined" />
+                            <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
+                            <TextField id="outlined-basic" label="Country" variant="outlined" />
+                        </Box>
 
-
-
+                        <div styles={{ display: 'flex' }}>
+                            <div>
                                 <Button
                                     disabled={activeStep === 0}
                                     onClick={handleBack}
@@ -184,6 +206,8 @@ export default function CompanyInfo() {
                                 >
                                     Back
                                 </Button>
+                            </div>
+                            <div>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -193,26 +217,15 @@ export default function CompanyInfo() {
                                     {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                                 </Button>
                             </div>
-                        </Box>
+                        </div>
 
-                    </div>
-
-
-
-
-
-
-                    {/* //  activeStep === steps.length && (
-        // <Paper square elevation={0} className={classes.resetContainer}>
-        //     <Typography>Form is submitted</Typography>
-        //     <Button onClick={handleReset} className={classes.button}>
-        //         Reset
-        //     </Button>
-        //     ) */}
-
+                    </Paper>
                 </Paper>
             </Paper>
-        </Container>
+
+
+
+        </Paper >
 
     );
 }
