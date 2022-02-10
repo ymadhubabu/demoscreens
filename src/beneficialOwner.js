@@ -42,44 +42,44 @@ function getSteps() {
 
 
 
-// function getStepContent(step: number) {
-//     switch (step) {
-//         case 0:
-//             return (
-//                 <form class="form-group">
-//                     <label>First Name</label>
-//                     <input type="text" placeholder="First Name"></input>
-//                     <br></br>
-//                     <label>Last Name</label>
-//                     <input type="text" placeholder="Last Name"></input>
-//                 </form>
-//             );
-//         case 1:
-//             return (
-//                 <form class="form-group">
-//                     <label>High School Percentage</label>
-//                     <input type="number" placeholder="High School Percentage"></input>
-//                     <br></br>
-//                     <label>Graduation percentage</label>
-//                     <input type="number" placeholder="Graduation Percentage"></input>
-//                 </form>
-//             );
-//         case 2:
-//             return (
-//                 <form class="form-group">
-//                     <label>Permanent Address</label>
-//                     <input type="text" placeholder="Permanent Address"></input>
-//                     <br></br>
-//                     <label>Temporary Address</label>
-//                     <input type="text" placeholder="Temporary Address"></input>
-//                 </form>
-//             );
-//         default:
-//             return 'Unknown step';
-//     }
-// }
+function getStepContent(step: number) {
+    switch (step) {
+        case 0:
+            return (
+                <form class="form-group">
+                    <label>First Name</label>
+                    <input type="text" placeholder="First Name"></input>
+                    <br></br>
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Last Name"></input>
+                </form>
+            );
+        case 1:
+            return (
+                <form class="form-group">
+                    <label>High School Percentage</label>
+                    <input type="number" placeholder="High School Percentage"></input>
+                    <br></br>
+                    <label>Graduation percentage</label>
+                    <input type="number" placeholder="Graduation Percentage"></input>
+                </form>
+            );
+        case 2:
+            return (
+                <form class="form-group">
+                    <label>Permanent Address</label>
+                    <input type="text" placeholder="Permanent Address"></input>
+                    <br></br>
+                    <label>Temporary Address</label>
+                    <input type="text" placeholder="Temporary Address"></input>
+                </form>
+            );
+        default:
+            return 'Unknown step';
+    }
+}
 
-export default function CompanyInfo() {
+export default function BeneficialOwner() {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -121,16 +121,19 @@ export default function CompanyInfo() {
                                 </Step>
                             ))}
                         </Stepper>
-                        <TextField id="outlined-basic" label="Company Name" variant="outlined" />
-                        <TextField id="outlined-basic" select label="Business Entity" value="Sole Proprietaryship/Single" variant="outlined" />
-                        <TextField id="outlined-basic" label="Company Email" variant="outlined" />
-                        <TextField id="outlined-basic" label="Company Phone Number" variant="outlined" />
-                        <TextField id="outlined-basic" label="Company Adress Line1" variant="outlined" />
-                        <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined" />
+                        <TextField id="outlined-basic" label="First Name" variant="outlined" />
+                        <TextField id="outlined-basic" label="Last Name" variant="outlined" />
+                        <TextField id="outlined-basic" label="SSN" variant="outlined" />
+                        <TextField id="outlined-basic" label="Ownership %" variant="outlined" />
+                        <TextField id="outlined-basic" label="Mailing Adress Line1" variant="outlined" />
+                        <TextField id="outlined-basic" label="Mailing Address Line2(Optional)" variant="outlined" />
                         <TextField id="outlined-basic" label="City" variant="outlined" />
                         <TextField id="outlined-basic" label="State" variant="outlined" />
                         <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
                         <TextField id="outlined-basic" label="Country" variant="outlined" />
+
+
+
 
 
 
