@@ -140,7 +140,7 @@ export default function CompanyInfo() {
             </Paper>
 
             <Paper sx={{ display: 'flex', flexDirection: 'column' }}>
-                <Paper sx={{ marginLeft: 5, marginBottom: 2 }}>
+                <Paper sx={{ marginLeft: 5, marginBottom: 2, marginTop: 2 }}>
                     <div style={{ marginLeft: 20 }}><h4>Welcome!!!</h4></div>
                 </Paper>
 
@@ -175,7 +175,7 @@ export default function CompanyInfo() {
 
                     </Paper>
 
-                    <Paper sx={{ p: 5, width: 600, flexGrow: 1 }} >
+                    <Paper sx={{ p: 5, width: 800, flexGrow: 1 }} >
                         <Box
                             component="form"
                             sx={{
@@ -197,27 +197,23 @@ export default function CompanyInfo() {
                             <TextField id="outlined-basic" label="Country" variant="outlined" />
                         </Box>
 
-                        <div styles={{ display: 'flex' }}>
-                            <div>
-                                <Button
-                                    disabled={activeStep === 0}
-                                    onClick={handleBack}
-                                    className={classes.button}
-                                >
-                                    Back
-                                </Button>
-                            </div>
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={handleNext}
-                                    className={classes.button}
-                                >
-                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                </Button>
-                            </div>
-                        </div>
+                        <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
+                            <Button
+                                disabled={activeStep === 0}
+                                onClick={handleBack}
+                                className={classes.button}
+                            >
+                                Back
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleNext}
+                                className={classes.button}
+                            >
+                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                            </Button>
+                        </Box>
 
                     </Paper>
                 </Paper>
