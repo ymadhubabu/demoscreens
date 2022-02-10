@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import VerticalLinearStepper from './companyInfo';
+import GeekStepper from './companyInfo';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
 
-    <VerticalLinearStepper />
+    <GeekStepper />
   </React.StrictMode>,
   document.getElementById('root')
 );
