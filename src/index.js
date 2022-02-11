@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-//import CompanyInfo from './companyInfo';
-import Activity from './activity';
+import CompanyInfo from './companyInfo';
+//import Activity from './activity';
 //import BeneficialOwner from './beneficialOwner';
 
 import reportWebVitals from './reportWebVitals';
@@ -11,8 +11,8 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
     {/* <BeneficialOwner /> */}
-    {/* <CompanyInfo /> */}
-    <Activity />
+    <CompanyInfo />
+    {/* <Activity /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );

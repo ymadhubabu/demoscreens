@@ -2,7 +2,14 @@ import React from 'react';
 import { makeStyles, Theme, createStyles }
     from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
 
+import { styled } from '@mui/material/styles';
+import Divider from '@mui/material/Divider';
 
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -19,30 +26,44 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
+
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DynamicFormOutlinedIcon from '@mui/icons-material/DynamicFormOutlined';
 import LocalActivityOutlinedIcon from '@mui/icons-material/LocalActivityOutlined';
 import MenuItem from '@mui/material/MenuItem';
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
+import Checkbox from 'material-ui/Checkbox'
+import SelectField from 'material-ui/SelectField'
+import useState from 'react';
+import isMobilePhone from 'validator/lib/isMobilePhone';
+import Stack from '@mui/material/Stack';
 
 
-const currencies = [
+
+const businessentity = [
     {
-        value: 'USD',
-        label: '$',
+        value: 'Sole Proprietorship/Single',
+        label: 'Sole Proprietorship/Single',
     },
     {
-        value: 'EUR',
-        label: '€',
+        value: 'Paternship',
+        label: 'Paternship',
     },
 ];
 
-const MAX_LENGTH = 10;
 
+const Input = styled('input')({
+    display: 'none',
+});
 
-
-
+const Root = styled('div')(({ theme }) => ({
+    width: '100%',
+    ...theme.typography.body2,
+    '& > :not(style) + :not(style)': {
+        marginTop: theme.spacing(2),
+    },
+}));
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -65,6 +86,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 
+
+
 function getSteps() {
     return [<b >Company Information</b>,
     <b>Beneficial Owner(s)</b>,
@@ -72,75 +95,34 @@ function getSteps() {
 }
 
 
-
-// function getStepContent(step: number) {
-//     switch (step) {
-//         case 0:
-//             return (
-//                 <form class="form-group">
-//                     <label>First Name</label>
-//                     <input type="text" placeholder="First Name"></input>
-//                     <br></br>
-//                     <label>Last Name</label>
-//                     <input type="text" placeholder="Last Name"></input>
-//                 </form>
-//             );
-//         case 1:
-//             return (
-//                 <form class="form-group">
-//                     <label>High School Percentage</label>
-//                     <input type="number" placeholder="High School Percentage"></input>
-//                     <br></br>
-//                     <label>Graduation percentage</label>
-//                     <input type="number" placeholder="Graduation Percentage"></input>
-//                 </form>
-//             );
-//         case 2:
-//             return (
-//                 <form class="form-group">
-//                     <label>Permanent Address</label>
-//                     <input type="text" placeholder="Permanent Address"></input>
-//                     <br></br>
-//                     <label>Temporary Address</label>
-//                     <input type="text" placeholder="Temporary Address"></input>
-//                 </form>
-//             );
-//         default:
-//             return 'Unknown step';
-//     }
-// }
-
 export default function CompanyInfo() {
 
-    const [text, setText] = React.useState("");
+
+
+    const [name, setName] = React.useState("");
+    const [entity, setEntity] = React.useState("");
+    const [email, setEmail] = React.useState("");
+    const [phone, setPhone] = React.useState("");
+    const [address1, setAddress1] = React.useState("");
+    const [city, setCity] = React.useState("");
+    const [state, setState] = React.useState("");
+    const [zip, setZip] = React.useState("");
+
+    const [country, setCountry] = React.useState("");
+
+
+
     const [errorMessage, setErrorMessage] = React.useState("");
 
-    React.useEffect(() => {
-        // Set errorMessage only if text is equal or bigger than MAX_LENGTH
-        if (text.length >= MAX_LENGTH) {
-            setErrorMessage(
-                "The input has exceeded the maximum number of characters"
-            );
-        }
-    }, [text]);
-
-    React.useEffect(() => {
-        // Set empty erroMessage only if text is less than MAX_LENGTH
-        // and errorMessage is not empty.
-        // avoids setting empty errorMessage if the errorMessage is already empty
-        if (text.length < MAX_LENGTH && errorMessage) {
-            setErrorMessage("");
-        }
-    }, [text, errorMessage]);
 
 
-    const [builderEntity, setBuilderEntity] = React.useState('');
+
 
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
     const handleChange = (event) => {
-        setBuilderEntity(event.target.value);
+        setEntity(event.target.value);
     };
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -232,55 +214,107 @@ export default function CompanyInfo() {
                         >
                             <h4>Company Information </h4>
 
-                            <TextField
-                                error={text.length >= MAX_LENGTH}
-                                id="outlined-error"
-                                label="Error"
-                                helperText={errorMessage}
-                                onChange={(e) => setText(e.target.value)}
-                                value={text}
-                            />
+
 
                             <TextField id="outlined-basic" label="Company Name" variant="outlined" />
-                            <TextField
-                                id="outlined-select-currency"
+                            <TextField id="outlined-select-entity"
                                 select
                                 label="Business Entity"
-                                value={builderEntity}
-                                onChange={handleChange}
-                                helperText="Please select your Business Entity"
+
+
                             >
-                                {currencies.map((option) => (
+                                {businessentity.map((option) => (
                                     <MenuItem key={option.value} value={option.value}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
-                            </TextField>                            <TextField id="outlined-basic" label="Company Email" variant="outlined" />
-                            <TextField id="outlined-basic" label="Company Phone Number" variant="outlined" />
-                            <TextField id="outlined-basic" label="Company Adress Line1" variant="outlined" />
-                            <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined" />
-                            <TextField id="outlined-basic" label="City" variant="outlined" />
-                            <TextField id="outlined-basic" label="State" variant="outlined" />
-                            <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
+
+                            </TextField>
+                            <FormControl>
+
+                                <RadioGroup
+                                    row
+                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                    name="row-radio-buttons-group"
+                                >
+                                    <FormControlLabel value="SSN" control={<Radio size="small" />} label="SSN" />
+                                    <FormControlLabel value="EIN/TIN" control={<Radio size="small" />} label="EIN /TIN" />
+
+                                </RadioGroup>
+                            </FormControl>
+                            <TextField id="outlined-basic" label="Company Email" variant="outlined"
+
+                            />
+                            <TextField id="outlined-basic" label="Company Phone Number" variant="outlined"
+
+                            />
+                            <TextField name="companyAddressLine1" id="outlined-basic" label="Company Adress Line1" variant="outlined"
+
+                            />
+                            <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined"
+
+                            />
+                            <TextField id="outlined-basic" label="City" variant="outlined"
+
+                            />
+                            <TextField id="outlined-basic" label="State" variant="outlined"
+
+                            />
+                            <TextField id="outlined-basic" label="Zip Code" variant="outlined"
+
+                            />
                             <TextField id="outlined-basic" label="Country" variant="outlined" />
+
+
                         </Box>
 
-                        <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
-                            <Button
-                                disabled={activeStep === 0}
-                                onClick={handleBack}
-                                className={classes.button}
-                            >
-                                Back
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-                                className={classes.button}
-                            >
-                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
+                        <Box sx={{ p: 4 }}>
+                            <Stack direction="column" alignItems="left" spacing={5}>
+                                <label htmlFor="contained-button-file">
+
+                                    <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                                    <Root>
+                                        <Divider textAlign="left">Upload Required Documents</Divider>
+
+
+                                    </Root>
+                                    <Box sx={{ p: 2 }}>
+                                        <Button variant="contained" component="span">
+                                            Upload
+                                        </Button>
+                                    </Box>
+                                </label>
+                            </Stack>
+
+                            <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
+
+                                <Button
+                                    disabled={activeStep === 0}
+                                    color="primary"
+                                    variant="contained"
+
+                                    onClick={handleBack}
+                                    className={classes.button}
+                                >
+                                    Back
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+                                    className={classes.button}
+                                >
+                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                </Button>
+
+                                {/* activeStep === steps.length && (
+        <Paper square elevation={0} className={classes.resetContainer}>
+   <Typography>Form is submitted</Typography>
+          <Button onClick={handleReset} className={classes.button}>
+               Reset
+            </Button>
+            ) */}
+                            </Box>
                         </Box>
 
                     </Paper>
