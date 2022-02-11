@@ -24,6 +24,25 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DynamicFormOutlinedIcon from '@mui/icons-material/DynamicFormOutlined';
 import LocalActivityOutlinedIcon from '@mui/icons-material/LocalActivityOutlined';
+import MenuItem from '@mui/material/MenuItem';
+
+
+const currencies = [
+    {
+        value: 'USD',
+        label: '$',
+    },
+    {
+        value: 'EUR',
+        label: '€',
+    },
+];
+
+const MAX_LENGTH = 10;
+
+
+
+
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -47,8 +66,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 function getSteps() {
-    return [<b style={{ color: 'purple' }}>'Company Information'</b>,
-    <b style={{ color: 'purple' }}>'Beneficial Owner(s)'</b>,
+    return [<b >Company Information</b>,
+    <b>Beneficial Owner(s)</b>,
     ];
 }
 
@@ -92,10 +111,37 @@ function getSteps() {
 // }
 
 export default function CompanyInfo() {
+
+    const [text, setText] = React.useState("");
+    const [errorMessage, setErrorMessage] = React.useState("");
+
+    React.useEffect(() => {
+        // Set errorMessage only if text is equal or bigger than MAX_LENGTH
+        if (text.length >= MAX_LENGTH) {
+            setErrorMessage(
+                "The input has exceeded the maximum number of characters"
+            );
+        }
+    }, [text]);
+
+    React.useEffect(() => {
+        // Set empty erroMessage only if text is less than MAX_LENGTH
+        // and errorMessage is not empty.
+        // avoids setting empty errorMessage if the errorMessage is already empty
+        if (text.length < MAX_LENGTH && errorMessage) {
+            setErrorMessage("");
+        }
+    }, [text, errorMessage]);
+
+
+    const [builderEntity, setBuilderEntity] = React.useState('');
+
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
-
+    const handleChange = (event) => {
+        setBuilderEntity(event.target.value);
+    };
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -141,7 +187,7 @@ export default function CompanyInfo() {
 
             <Paper sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Paper sx={{ marginLeft: 5, marginBottom: 2, marginTop: 2 }}>
-                    <div style={{ marginLeft: 20 }}><h4>Welcome!!!</h4></div>
+                    <div style={{ marginLeft: 20 }}><h4>Welcome to</h4></div>
                 </Paper>
 
                 <Paper sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -184,10 +230,32 @@ export default function CompanyInfo() {
                             noValidate
                             autoComplete="off"
                         >
-                            <h4>Company Informaation Application</h4>
+                            <h4>Company Information </h4>
+
+                            <TextField
+                                error={text.length >= MAX_LENGTH}
+                                id="outlined-error"
+                                label="Error"
+                                helperText={errorMessage}
+                                onChange={(e) => setText(e.target.value)}
+                                value={text}
+                            />
+
                             <TextField id="outlined-basic" label="Company Name" variant="outlined" />
-                            <TextField id="outlined-basic" select label="Business Entity" value="Sole Proprietaryship/Single" variant="outlined" />
-                            <TextField id="outlined-basic" label="Company Email" variant="outlined" />
+                            <TextField
+                                id="outlined-select-currency"
+                                select
+                                label="Business Entity"
+                                value={builderEntity}
+                                onChange={handleChange}
+                                helperText="Please select your Business Entity"
+                            >
+                                {currencies.map((option) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
+                            </TextField>                            <TextField id="outlined-basic" label="Company Email" variant="outlined" />
                             <TextField id="outlined-basic" label="Company Phone Number" variant="outlined" />
                             <TextField id="outlined-basic" label="Company Adress Line1" variant="outlined" />
                             <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined" />

@@ -35,49 +35,49 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 function getSteps() {
-    return [<b style={{ color: 'purple' }}>'Company Information'</b>,
-    <b style={{ color: 'purple' }}>'Beneficial Owner(s)'</b>,
+    return [<b >Company Information</b>,
+    <b >Beneficial Owner(s)</b>,
     ];
 }
 
 
 
-function getStepContent(step: number) {
-    switch (step) {
-        case 0:
-            return (
-                <form class="form-group">
-                    <label>First Name</label>
-                    <input type="text" placeholder="First Name"></input>
-                    <br></br>
-                    <label>Last Name</label>
-                    <input type="text" placeholder="Last Name"></input>
-                </form>
-            );
-        case 1:
-            return (
-                <form class="form-group">
-                    <label>High School Percentage</label>
-                    <input type="number" placeholder="High School Percentage"></input>
-                    <br></br>
-                    <label>Graduation percentage</label>
-                    <input type="number" placeholder="Graduation Percentage"></input>
-                </form>
-            );
-        case 2:
-            return (
-                <form class="form-group">
-                    <label>Permanent Address</label>
-                    <input type="text" placeholder="Permanent Address"></input>
-                    <br></br>
-                    <label>Temporary Address</label>
-                    <input type="text" placeholder="Temporary Address"></input>
-                </form>
-            );
-        default:
-            return 'Unknown step';
-    }
-}
+// function getStepContent(step: number) {
+//     switch (step) {
+//         case 0:
+//             return (
+//                 <form class="form-group">
+//                     <label>First Name</label>
+//                     <input type="text" placeholder="First Name"></input>
+//                     <br></br>
+//                     <label>Last Name</label>
+//                     <input type="text" placeholder="Last Name"></input>
+//                 </form>
+//             );
+//         case 1:
+//             return (
+//                 <form class="form-group">
+//                     <label>High School Percentage</label>
+//                     <input type="number" placeholder="High School Percentage"></input>
+//                     <br></br>
+//                     <label>Graduation percentage</label>
+//                     <input type="number" placeholder="Graduation Percentage"></input>
+//                 </form>
+//             );
+//         case 2:
+//             return (
+//                 <form class="form-group">
+//                     <label>Permanent Address</label>
+//                     <input type="text" placeholder="Permanent Address"></input>
+//                     <br></br>
+//                     <label>Temporary Address</label>
+//                     <input type="text" placeholder="Temporary Address"></input>
+//                 </form>
+//             );
+//         default:
+//             return 'Unknown step';
+//     }
+// }
 
 export default function BeneficialOwner() {
     const classes = useStyles();
