@@ -27,20 +27,49 @@ const columns = [
     },
 ];
 
-function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-}
+function createData(recenttransaction, transactiontype, amount) {
+    return { recenttransaction, transactiontype, amount };
 
+}
+function createData1(transtype, transcount
+) {
+    return {
+        transtype, transcount
+    };
+
+}
+function createData2(apilist
+) {
+    return {
+        apilist
+    };
+
+}
 const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
+
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+    createData('02/03 @ 12:55pm', 'Transfer', 4000),
+
 ];
+const rows1 = [
+    createData1('Wallet Transfers', 240),
+    createData1('Deposits', 20),
+    createData1('Withdraws', 35),
+];
+
+
 const rows2 = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+    createData2('api_call.list.exeternal_service'),
+    createData2('api_call.list.exeternal_service'),
+    createData2('api_call.list.exeternal_service'),
+
 
 ];
 export default function Activity() {
@@ -48,74 +77,75 @@ export default function Activity() {
     return (
 
 
-        <Paper sx={{ p: 30, marginLeft: 40, marginTop: 30, width: 800, flexGrow: 1 }} >
+        <Paper sx={{ p: 20, marginLeft: 40, marginTop: 10, marginRight: 1, width: '55%', flexGrow: 1 }} >
 
 
-            <TableContainer component={Paper}>
+            <TableContainer component={Paper}  >
+                <Box sx={{ display: 'flex' }}>
+                    <Box sx={{ width: '100%' }} >
 
-                <Table sx={{ minWidth: 250 }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="left">Calories</TableCell>
-                            <TableCell align="left">Fat(g)</TableCell>
+                        <Table sx={{ minWidth: 450 }} aria-label="simple table">
 
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Transaction Type</TableCell>
+                                    <TableCell align="right">Trans.Count</TableCell>
 
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows2.map((row) => (
-                            <TableRow
-                                key={row.name}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="left">{row.calories}</TableCell>
-                                <TableCell align="left">{row.fat}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows1.map((row) => (
+                                    <TableRow
+                                        key={row.name}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.transtype}
+                                        </TableCell>
+                                        <TableCell align="right">{row.transcount}</TableCell>
 
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Box >
+                    <Box sx={{ width: '100%' }}>
+                        <Table sx={{ minWidth: 450 }} aria-label="simple table">
 
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="right">Calories</TableCell>
-                            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <TableRow
-                                key={row.name}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="right">{row.calories}</TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
-                                <TableCell align="right">{row.protein}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Recent Transactions</TableCell>
+                                    <TableCell align="right">Trans.Type</TableCell>
+                                    <TableCell align="right">Amount</TableCell>
+
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map((row) => (
+                                    <TableRow
+                                        key={row.recenttransaction}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.recenttransaction}
+                                        </TableCell>
+                                        <TableCell align="right">{row.transactiontype}</TableCell>
+                                        <TableCell align="right">{row.amount}</TableCell>
+
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Box>
+                </Box>
             </TableContainer>
 
             <Paper sx={{ p: 5, height: 200, marginLeft: 2, marginTop: 10, width: '100 %', flexGrow: 1 }} >
                 <Table sx={{ minWidth: 250 }} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Dessert (100g serving)</TableCell>
-                            <TableCell align="left">Calories</TableCell>
-                            <TableCell align="left">Fat(g)</TableCell>
+                            <TableCell>API Call Breakdown</TableCell>
+
 
 
                         </TableRow>
@@ -127,10 +157,9 @@ export default function Activity() {
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {row.apilist}
                                 </TableCell>
-                                <TableCell align="left">{row.calories}</TableCell>
-                                <TableCell align="left">{row.fat}</TableCell>
+
 
                             </TableRow>
                         ))}
@@ -140,7 +169,7 @@ export default function Activity() {
 
 
 
-        </Paper>
+        </Paper >
 
     );
 }
