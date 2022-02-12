@@ -319,23 +319,41 @@ export default function CompanyInfo() {
                         {activeStep === 1 &&
                             <Box>
 
+
                                 {
                                     benificiars.length > 0 && <Paper>
 
 
-                                        {benificiars.map((item, index) => (
+                                        <div>
+                                            <Accordion expanded={expanded === 'panel2'} onChange={handleChange1('panel2')}>
+                                                <AccordionSummary
+                                                    expandIcon={<ExpandMoreIcon />}
+                                                    aria-controls="panel1bh-content"
+                                                    id="panel1bh-header"
+                                                >
+                                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                                        Beneficial Owner
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    {benificiars.map((item, index) => (
 
-                                            <Paper sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                <h4 style={{ marginLeft: 20 }}>Benificial Owner : {item.firstName} {item.lastName} </h4>
-                                                <h4 style={{ marginRight: 20 }}> Ownership : {item.ownership}% </h4>
-                                                {/* <tr data-index={index}>
+                                                        <Paper sx={{ display: 'flex', justifyContent: 'space-between' }}>
+
+
+                                                            <h4 style={{ marginLeft: 20 }}>Benificial Owner : {item.firstName} {item.lastName} </h4>
+                                                            <h4 style={{ marginRight: 20 }}> Ownership : {item.ownership}% </h4>
+                                                            {/* <tr data-index={index}>
                                                     <td>{item.firstName}</td>
                                                     <td>{item.lastName}</td>
                                                     <td>{item.ownership}</td>
                                                 </tr> */}
-                                            </Paper>
-                                        ))}
 
+                                                        </Paper>
+                                                    ))}
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </div>
                                     </Paper>
                                 }
 
