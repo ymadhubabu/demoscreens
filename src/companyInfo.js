@@ -39,7 +39,10 @@ import useState from 'react';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import Stack from '@mui/material/Stack';
 import BeneficialOwner from './beneficialOwner'
-
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 
 const businessentity = [
@@ -98,7 +101,11 @@ function getSteps() {
 
 export default function CompanyInfo() {
 
+    const [expanded, setExpanded] = React.useState(false);
 
+    const handleChange1 = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
     const [name, setName] = React.useState("");
     const [entity, setEntity] = React.useState("");
@@ -341,69 +348,86 @@ export default function CompanyInfo() {
                                         noValidate
                                         autoComplete="off"
                                     >
-                                        <h4>Beneficial Owner</h4>
+                                        {/* <h4>Beneficial Owner</h4> */}
+
+                                        <div>
+                                            <Accordion expanded={expanded === 'panel1'} onChange={handleChange1('panel1')}>
+                                                <AccordionSummary
+                                                    expandIcon={<ExpandMoreIcon />}
+                                                    aria-controls="panel1bh-content"
+                                                    id="panel1bh-header"
+                                                >
+                                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                                        Beneficial Owner
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" onChange={e => setFirstName(e.target.value)} />
+                                                    <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={e => setLastName(e.target.value)} />
+                                                    <TextField id="outlined-basic" label="SSN" variant="outlined" />
+                                                    <TextField id="outlined-basic" label="Ownership %" name="ownership" variant="outlined" onChange={e => setOwnerShip(e.target.value)} />
+                                                    <TextField id="outlined-basic" label="Mailing Adress Line1" variant="outlined" />
+                                                    <TextField id="outlined-basic" label="Mailing Address Line2(Optional)" variant="outlined" />
+                                                    <TextField id="outlined-basic" label="City" variant="outlined" />
+                                                    <TextField id="outlined-basic" label="State" variant="outlined" />
+                                                    <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
+                                                    <TextField id="outlined-basic" label="Country" variant="outlined" />
+
+                                                    <Stack direction="column" alignItems="left" spacing={5}>
+                                                        <label htmlFor="contained-button-file">
+                                                            <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                                                            <Root>
+                                                                <Divider textAlign="left">Upload Required Documents</Divider>
 
 
-
-                                        <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" onChange={e => setFirstName(e.target.value)} />
-                                        <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={e => setLastName(e.target.value)} />
-                                        <TextField id="outlined-basic" label="SSN" variant="outlined" />
-                                        <TextField id="outlined-basic" label="Ownership %" name="ownership" variant="outlined" onChange={e => setOwnerShip(e.target.value)} />
-                                        <TextField id="outlined-basic" label="Mailing Adress Line1" variant="outlined" />
-                                        <TextField id="outlined-basic" label="Mailing Address Line2(Optional)" variant="outlined" />
-                                        <TextField id="outlined-basic" label="City" variant="outlined" />
-                                        <TextField id="outlined-basic" label="State" variant="outlined" />
-                                        <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
-                                        <TextField id="outlined-basic" label="Country" variant="outlined" />
-                                        <Stack direction="column" alignItems="left" spacing={5}>
-                                            <label htmlFor="contained-button-file">
-                                                <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                                                <Root>
-                                                    <Divider textAlign="left">Upload Required Documents</Divider>
+                                                            </Root>
 
 
-                                                </Root>
+                                                            <Box sx={{ p: 4, display: 'flex', justifyContent: "space-between" }}>
+                                                                <FormControl>
+                                                                    <FormLabel id="demo-form-control-label-placement">Select Identification to Upload:</FormLabel>
+                                                                    <RadioGroup
+                                                                        row
+                                                                        aria-labelledby="demo-row-radio-buttons-group-label"
+                                                                        name="row-radio-buttons-group"
+                                                                        defaultValue="top"
+                                                                    >
+                                                                        <FormControlLabel
+                                                                            value="top"
+                                                                            control={<Radio />}
+                                                                            label="Driver's License"
+                                                                            labelPlacement="end"
+                                                                        />
+                                                                        <FormControlLabel
+                                                                            value="end"
+                                                                            control={<Radio />}
+                                                                            label="State-Issued ID"
+                                                                            labelPlacement="end"
+                                                                        />
+                                                                        <FormControlLabel
+                                                                            value="side"
+                                                                            control={<Radio />}
+                                                                            label="PassPort"
+                                                                            labelPlacement="end"
+                                                                        />
+                                                                    </RadioGroup>
+                                                                </FormControl>
+                                                                <Button variant="contained" component="span">
+                                                                    Upload
+                                                                </Button>
 
-                                                <Box sx={{ p: 4, display: 'flex', justifyContent: "space-between" }}>
-                                                    <FormControl>
-                                                        <FormLabel id="demo-form-control-label-placement">Select Identification to Upload:</FormLabel>
-                                                        <RadioGroup
-                                                            row
-                                                            aria-labelledby="demo-row-radio-buttons-group-label"
-                                                            name="row-radio-buttons-group"
-                                                            defaultValue="top"
-                                                        >
-                                                            <FormControlLabel
-                                                                value="top"
-                                                                control={<Radio />}
-                                                                label="Driver's License"
-                                                                labelPlacement="end"
-                                                            />
-                                                            <FormControlLabel
-                                                                value="end"
-                                                                control={<Radio />}
-                                                                label="State-Issued ID"
-                                                                labelPlacement="end"
-                                                            />
-                                                            <FormControlLabel
-                                                                value="side"
-                                                                control={<Radio />}
-                                                                label="PassPort"
-                                                                labelPlacement="end"
-                                                            />
-                                                        </RadioGroup>
-                                                    </FormControl>
-                                                    <Button variant="contained" component="span">
-                                                        Upload
-                                                    </Button>
+                                                            </Box>
+                                                        </label>
 
-                                                </Box>
-                                            </label>
-                                        </Stack>
 
+                                                    </Stack>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </div>
 
 
                                     </Box>
+
 
 
 
@@ -411,13 +435,23 @@ export default function CompanyInfo() {
                                     <Box sx={{ p: 2, m: 5, display: 'flex', justifyContent: 'space-between' }}>
                                         <Button variant="contained" onClick={handleRemove} >Remove Benificial Owner</Button>
                                         <Button variant="contained" onClick={handleSave} >Save</Button>
+
                                     </Box>
+
+
+
+
 
                                 </Paper>
 
+
+
+
                                 <Box textAlign='center' ><Button>+ Add Additional Benificial Owner</Button></Box>
                             </Box>
+
                         }
+
                         <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
 
                             <Button
