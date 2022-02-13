@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { makeStyles, Theme, createStyles }
     from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
@@ -26,7 +26,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-
+import BusinessIcon from '@mui/icons-material/Business';
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DynamicFormOutlinedIcon from '@mui/icons-material/DynamicFormOutlined';
@@ -90,8 +90,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 
-
-
 function getSteps() {
     return [<b >Company Information</b>,
     <b>Beneficial Owner(s)</b>,
@@ -100,6 +98,7 @@ function getSteps() {
 
 
 export default function CompanyInfo() {
+
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -117,7 +116,7 @@ export default function CompanyInfo() {
     const [zip, setZip] = React.useState("");
     const [country, setCountry] = React.useState("");
     const [errorMessage, setErrorMessage] = React.useState("");
-
+    const [errors, setErrors] = React.useState("");
     const [benificiars, setBenificiars] = React.useState([]);
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
@@ -129,6 +128,36 @@ export default function CompanyInfo() {
     const handleChange = (event) => {
         setEntity(event.target.value);
     };
+
+
+    const formValidation = () => {
+
+        let newErrors = {}
+        if (name === "") {
+            newErrors.name = 'Name cant be blank!'
+        }
+
+
+        if (email === "") {
+            newErrors.email = 'Mandatory Field'
+        }
+        setErrors(newErrors)
+    }
+
+
+
+
+
+    useEffect(() => {
+
+        // we want to skip validation on first render
+
+        // here we can disable/enable the save button by wrapping the setState function
+        // in a call to the validation function which returns true/false
+        //setDisabled(formValidation())
+        formValidation();
+
+    }, [name, email])
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -153,7 +182,6 @@ export default function CompanyInfo() {
 
         console.log('benificiars --> ' + benificiars);
     };
-
     const handleRemove = () => {
         console.log('handleRemove.....');
     };
@@ -167,6 +195,7 @@ export default function CompanyInfo() {
 
                 <Box sx={{ bgcolor: 'background.paper' }}>
                     <nav aria-label="main mailbox folders">
+
                         <List>
                             <ListItem disablePadding>
                                 <ListItemButton>
@@ -253,7 +282,8 @@ export default function CompanyInfo() {
                                             <MenuItem key={option.value} value={option.value}>
                                                 {option.label}
                                             </MenuItem>
-                                        ))}
+                                        ))
+                                        }
 
                                     </TextField>
                                     <FormControl>
@@ -268,15 +298,18 @@ export default function CompanyInfo() {
 
                                         </RadioGroup>
                                     </FormControl>
-                                    <TextField id="outlined-basic" label="Company Email" variant="outlined"
+                                    <TextField id="outlined-basic" label="Company Email" error name="email" variant="outlined"
+                                        helperText={errors.email}
 
                                     />
+
                                     <TextField id="outlined-basic" label="Company Phone Number" variant="outlined"
 
                                     />
                                     <TextField name="companyAddressLine1" id="outlined-basic" label="Company Adress Line1" variant="outlined"
 
                                     />
+
                                     <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined"
 
                                     />
@@ -504,5 +537,3 @@ export default function CompanyInfo() {
 
     );
 }
-
-
