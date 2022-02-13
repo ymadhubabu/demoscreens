@@ -2,6 +2,9 @@ import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { Container } from '@material-ui/core';
 import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import ListItemText from '@mui/material/ListItemText';
+
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,6 +12,20 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import StaticDateRangePicker from '@mui/lab/StaticDateRangePicker';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import useState from 'react';
+import Popper from '@mui/material/Popper';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import Fade from '@mui/material/Fade';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 
 
 
@@ -73,16 +90,109 @@ const rows2 = [
 
 ];
 export default function Activity() {
+    const [expanded, setExpanded] = React.useState(false);
+
+    const handleChange = (panel) => (event, isExpanded) => {
+        setExpanded(isExpanded ? panel : false);
+    };
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [open, setOpen] = React.useState(false);
+    const [placement, setPlacement] = React.useState();
+
+    const handleClick = (newPlacement) => (event) => {
+        setAnchorEl(event.currentTarget);
+        setOpen((prev) => placement !== newPlacement || !prev);
+        setPlacement(newPlacement);
+    };
+    const [value, setValue] = React.useState([null, null]);
+
 
     return (
+
 
 
         <Paper sx={{ p: 20, marginLeft: 40, marginTop: 10, marginRight: 1, width: '55%', flexGrow: 1 }} >
 
 
+            <div>
+                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1bh-content"
+                        id="panel1bh-header"
+                    >
+
+                        <Typography sx={{ color: 'text.secondary' }}>Today</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Box sx={{ width: 500 }}>
+                            <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
+                                {({ TransitionProps }) => (
+                                    <Fade {...TransitionProps} timeout={350}>
+                                        <Paper>
+
+
+                                            <Typography>
+
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                    <StaticDateRangePicker
+                                                        displayStaticWrapperAs="desktop"
+                                                        value={value}
+                                                        onChange={(newValue) => {
+                                                            setValue(newValue);
+                                                        }}
+                                                        renderInput={(startProps, endProps) => (
+                                                            <React.Fragment>
+                                                                <TextField {...startProps} />
+                                                                <Box sx={{ mx: 2 }}> to </Box>
+                                                                <TextField {...endProps} />
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                </LocalizationProvider>
+                                            </Typography>
+                                        </Paper>
+                                    </Fade>
+                                )}
+                            </Popper>
+                            <Grid container justifyContent="center">
+                                <ListItemText>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Today</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Yesterday</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Last 7 days</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Month to Date</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Last Month</Button>
+                                    </Grid>
+
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Custom Date Range</Button>
+                                    </Grid>
+                                </ListItemText>
+                            </Grid>
+                        </Box>
+                    </AccordionDetails>
+                </Accordion>
+
+            </div>
+
+
+
+
+
             <TableContainer component={Paper}  >
                 <Box sx={{ display: 'flex' }}>
                     <Box sx={{ width: '100%' }} >
+
 
                         <Table sx={{ minWidth: 450 }} aria-label="simple table">
 
