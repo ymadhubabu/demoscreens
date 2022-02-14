@@ -7,6 +7,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import PropTypes from "prop-types";
 
 import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
@@ -43,6 +44,9 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { withStyles } from "@material-ui/core/styles";
+import { color } from '@mui/system';
+import { StylesContext } from '@material-ui/styles';
 
 
 const businessentity = [
@@ -84,11 +88,49 @@ const useStyles = makeStyles((theme: Theme) =>
         resetContainer: {
             padding: theme.spacing(3),
         },
+        stepIconRoot: {
+            color: "pink",
+            "&.MuiStepIcon-active": {
+                color: "red"
+            },
+            "&.MuiStepIcon-completed": {
+                color: "green"
+            }
+        },
+        radio: {
+            colorPrimary: {
+                '&$checked': {
+                    color: 'teal'
+                }
+            },
+            checked: {},
+        }
 
     }),
 );
 
-
+// const styles = theme => ({
+//     root: {
+//         width: '100%',
+//     },
+//     stepIconRoot: {
+//         color: "pink",
+//         "&.MuiStepIcon-active": {
+//             color: "red"
+//         },
+//         "&.MuiStepIcon-completed": {
+//             color: "green"
+//         }
+//     },
+//     radio: {
+//         colorPrimary: {
+//             '&$checked': {
+//                 color: 'blue'
+//             }
+//         },
+//         checked: {},
+//     }
+// });
 
 function getSteps() {
     return [<b >Company Information</b>,
@@ -106,41 +148,70 @@ export default function CompanyInfo() {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const [name, setName] = React.useState("");
-    const [entity, setEntity] = React.useState("");
+    const [companyName, setCompanyName] = React.useState("");
+    const [businessEntity, setBusinessEntity] = React.useState("");
     const [email, setEmail] = React.useState("");
-    const [phone, setPhone] = React.useState("");
-    const [address1, setAddress1] = React.useState("");
+    const [phoneNumber, setPhoneNumber] = React.useState("");
+    const [addressLine1, setAddressLine1] = React.useState("");
     const [city, setCity] = React.useState("");
     const [state, setState] = React.useState("");
-    const [zip, setZip] = React.useState("");
+    const [zipCode, setZipCode] = React.useState("");
     const [country, setCountry] = React.useState("");
     const [errorMessage, setErrorMessage] = React.useState("");
     const [errors, setErrors] = React.useState("");
-    const [benificiars, setBenificiars] = React.useState([]);
+    const [beneficialOwner, setBeneficialOwner] = React.useState([{}]);
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
-    const [ownership, setOwnerShip] = React.useState("");
+    const [ownerShip, setOwnerShip] = React.useState("");
+    const firstRender = useRef(true);
 
     const classes = useStyles();
+
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
     const handleChange = (event) => {
-        setEntity(event.target.value);
+        setBusinessEntity(event.target.value);
     };
+
 
 
     const formValidation = () => {
 
         let newErrors = {}
-        if (name === "") {
-            newErrors.name = 'Name cant be blank!'
+        if (companyName === "") {
+            newErrors.companyName = 'Company name is required'
         }
+
+        let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 
         if (email === "") {
-            newErrors.email = 'Mandatory Field'
+            newErrors.email = 'Email is required'
         }
+        else if (!regEmail.test.email) {
+            newErrors.email = 'Email is invalid'
+        }
+
+        if (phoneNumber === "") {
+            newErrors.phoneNumber = 'Phone number is required'
+        }
+        if (state === "") {
+            newErrors.state = 'State is required'
+        }
+        if (addressLine1 === "") {
+            newErrors.addressLine1 = 'Address Line1  is required'
+        }
+        if (city === "") {
+            newErrors.city = 'City is required'
+        }
+        if (zipCode === "") {
+            newErrors.zipCode = 'Zip code is required'
+        }
+        if (country === "") {
+            newErrors.country = 'Country is required'
+        }
+
+
         setErrors(newErrors)
     }
 
@@ -150,14 +221,20 @@ export default function CompanyInfo() {
 
     useEffect(() => {
 
+
         // we want to skip validation on first render
+        if (firstRender.current) {
+            firstRender.current = false
+            return
+        }
 
         // here we can disable/enable the save button by wrapping the setState function
         // in a call to the validation function which returns true/false
         //setDisabled(formValidation())
         formValidation();
 
-    }, [name, email])
+    }, [companyName, email, phoneNumber, addressLine1, state, city, zipCode, country]);
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -171,20 +248,20 @@ export default function CompanyInfo() {
     };
 
     const handleSave = () => {
-        var tempArr = benificiars;
-        tempArr.push({
+        setBeneficialOwner([...beneficialOwner, {
             firstName: firstName,
             lastName: lastName,
-            ownership: ownership
-        });
+            ownerShip: ownerShip
+        }]);
 
-        setBenificiars(tempArr);
 
-        console.log('benificiars --> ' + benificiars);
+        console.log('benificial-owners --> ' + beneficialOwner);
     };
     const handleRemove = () => {
         console.log('handleRemove.....');
+
     };
+
 
     return (
 
@@ -242,7 +319,15 @@ export default function CompanyInfo() {
                                     <Stepper activeStep={activeStep} orientation="vertical">
                                         {steps.map((label, index) => (
                                             <Step key={label}>
-                                                <StepLabel>{label}</StepLabel>
+                                                <StepLabel StepIconProps={{
+                                                    classes: {
+                                                        root: classes.stepIconRoot,
+                                                        active: classes.stepIconActive,
+                                                        completed: classes.stepIconCompleted
+                                                    }
+                                                }}>
+                                                    {label}</StepLabel>
+
                                             </Step>
                                         ))}
                                     </Stepper>
@@ -260,71 +345,83 @@ export default function CompanyInfo() {
                         {activeStep === 0 &&
                             <Box>
                                 <Box
+
+
                                     component="form"
                                     sx={{
+
                                         '& .MuiTextField-root': { m: 1, width: '200' },
                                     }}
                                     noValidate
                                     autoComplete="off"
                                 >
-                                    <h4>Company Information </h4>
+                                    <h4 style={{ color: '#008B8B' }}>Company Information </h4>
 
 
+                                    <div className="inputRounded">
+                                        <TextField id="outlined-basic" label="Company Name" variant="outlined" onChange={e => setCompanyName(e.target.value)}
+                                            error={errors.companyName !== undefined} helperText={errors.companyName} />
+                                        <TextField id="outlined-select-entity"
+                                            select
+                                            label="Business Entity"
+                                            defaultValue="Sole Proprietorship/Single"
 
-                                    <TextField id="outlined-basic" label="Company Name" variant="outlined" />
-                                    <TextField id="outlined-select-entity"
-                                        select
-                                        label="Business Entity"
-                                        defaultValue="Sole Proprietorship/Single"
-
-                                    >
-                                        {businessentity.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))
-                                        }
-
-                                    </TextField>
-                                    <FormControl>
-
-                                        <RadioGroup
-                                            row
-                                            aria-labelledby="demo-row-radio-buttons-group-label"
-                                            name="row-radio-buttons-group"
                                         >
-                                            <FormControlLabel value="SSN" control={<Radio size="small" />} label="SSN" />
-                                            <FormControlLabel value="EIN/TIN" control={<Radio size="small" />} label="EIN /TIN" />
+                                            {businessentity.map((option) => (
+                                                <MenuItem key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </MenuItem>
+                                            ))
+                                            }
 
-                                        </RadioGroup>
-                                    </FormControl>
-                                    <TextField id="outlined-basic" label="Company Email" error name="email" variant="outlined"
-                                        helperText={errors.email}
+                                        </TextField>
+                                        <FormControl>
 
-                                    />
+                                            <RadioGroup
+                                                row
+                                                aria-labelledby="demo-row-radio-buttons-group-label"
+                                                name="row-radio-buttons-group"
+                                            >
+                                                <FormControlLabel value="SSN" control={<Radio disableRipple classes={{ colorPrimary: classes.radio }} size="small" />} label="SSN" />
+                                                <FormControlLabel value="EIN/TIN" control={<Radio disableRipple classes={{ colorPrimary: classes.radio }} size="small" />} label="EIN /TIN" />
 
-                                    <TextField id="outlined-basic" label="Company Phone Number" variant="outlined"
+                                            </RadioGroup>
+                                        </FormControl>
+                                        <TextField id="outlined-basic" label="Company Email" variant="outlined"
+                                            error={errors.email !== undefined}
+                                            helperText={errors.email} onChange={e => setEmail(e.target.value)}
 
-                                    />
-                                    <TextField name="companyAddressLine1" id="outlined-basic" label="Company Adress Line1" variant="outlined"
+                                        />
 
-                                    />
+                                        <TextField id="outlined-basic" label="Company Phone Number" variant="outlined"
+                                            error={errors.phoneNumber !== undefined} helperText={errors.phoneNumber} onChange={e => setPhoneNumber(e.target.value)}
 
-                                    <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined"
+                                        />
+                                        <TextField name="companyAddressLine1" id="outlined-basic" label="Company Adress Line1" variant="outlined"
+                                            error={errors.addressLine1 !== undefined} helperText={errors.addressLine1} onChange={e => setAddressLine1(e.target.value)}
 
-                                    />
-                                    <TextField id="outlined-basic" label="City" variant="outlined"
+                                        />
 
-                                    />
-                                    <TextField id="outlined-basic" label="State" variant="outlined"
+                                        <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined"
 
-                                    />
-                                    <TextField id="outlined-basic" label="Zip Code" variant="outlined"
+                                        />
+                                        <TextField id="outlined-basic" label="City" variant="outlined"
+                                            error={errors.city !== undefined} helperText={errors.city} onChange={e => setCity(e.target.value)}
 
-                                    />
-                                    <TextField id="outlined-basic" label="Country" variant="outlined" />
+                                        />
+                                        <TextField id="outlined-basic" label="State" variant="outlined"
+                                            error={errors.state !== undefined} helperText={errors.state} onChange={e => setState(e.target.value)}
 
+                                        />
+                                        <TextField id="outlined-basic" label="Zip Code" variant="outlined"
+                                            error={errors.zipCode !== undefined} helperText={errors.zipCode} onChange={e => setZipCode(e.target.value)}
 
+                                        />
+                                        <TextField id="outlined-basic" label="Country" variant="outlined"
+                                            error={errors.country !== undefined} helperText={errors.country} onChange={e => setCountry(e.target.value)}
+                                        />
+
+                                    </div>
                                 </Box>
 
                                 <Box sx={{ p: 4 }}>
@@ -333,12 +430,16 @@ export default function CompanyInfo() {
 
                                             <Input accept="image/*" id="contained-button-file" multiple type="file" />
                                             <Root>
-                                                <Divider textAlign="left">Upload Required Documents</Divider>
+                                                <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents</Divider>
 
 
                                             </Root>
                                             <Box sx={{ p: 2 }}>
-                                                <Button variant="contained" component="span">
+                                                <Button variant="contained" style={{
+                                                    borderRadius: 18,
+                                                    minWidth: 160,
+                                                    backgroundColor: "#008B8B",
+                                                }} component="span">
                                                     Upload
                                                 </Button>
                                             </Box>
@@ -354,7 +455,7 @@ export default function CompanyInfo() {
 
 
                                 {
-                                    benificiars.length > 0 && <Paper>
+                                    beneficialOwner.length > 0 && <Paper>
 
 
                                         <div>
@@ -364,22 +465,22 @@ export default function CompanyInfo() {
                                                     aria-controls="panel1bh-content"
                                                     id="panel1bh-header"
                                                 >
-                                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                                        Beneficial Owner
-                                                    </Typography>
+                                                    {/* <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                                                        <h4 style={{ color: '#008B8B' }}>Beneficial Owner</h4>
+                                                    </Typography> */}
                                                 </AccordionSummary>
                                                 <AccordionDetails>
-                                                    {benificiars.map((item, index) => (
+                                                    {beneficialOwner.map((item, index) => (
 
                                                         <Paper sx={{ display: 'flex', justifyContent: 'space-between' }}>
 
 
-                                                            <h4 style={{ marginLeft: 20 }}>Benificial Owner : {item.firstName} {item.lastName} </h4>
-                                                            <h4 style={{ marginRight: 20 }}> Ownership : {item.ownership}% </h4>
+                                                            <h4 style={{ marginLeft: 20 }}>Beneficial Owner : {item.firstName} {item.lastName} </h4>
+                                                            <h4 style={{ marginRight: 20 }}> OwnerShip : {item.ownerShip}% </h4>
                                                             {/* <tr data-index={index}>
                                                     <td>{item.firstName}</td>
                                                     <td>{item.lastName}</td>
-                                                    <td>{item.ownership}</td>
+                                                    <td>{item.ownerShip}</td>
                                                 </tr> */}
 
                                                         </Paper>
@@ -409,26 +510,28 @@ export default function CompanyInfo() {
                                                     id="panel1bh-header"
                                                 >
                                                     <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                                        Beneficial Owner
-                                                    </Typography>
+                                                        <h4 style={{ color: '#008B8B' }}>Beneficial Owner</h4>                                                    </Typography>
                                                 </AccordionSummary>
                                                 <AccordionDetails>
-                                                    <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" onChange={e => setFirstName(e.target.value)} />
-                                                    <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={e => setLastName(e.target.value)} />
-                                                    <TextField id="outlined-basic" label="SSN" variant="outlined" />
-                                                    <TextField id="outlined-basic" label="Ownership %" name="ownership" variant="outlined" onChange={e => setOwnerShip(e.target.value)} />
-                                                    <TextField id="outlined-basic" label="Mailing Adress Line1" variant="outlined" />
-                                                    <TextField id="outlined-basic" label="Mailing Address Line2(Optional)" variant="outlined" />
-                                                    <TextField id="outlined-basic" label="City" variant="outlined" />
-                                                    <TextField id="outlined-basic" label="State" variant="outlined" />
-                                                    <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
-                                                    <TextField id="outlined-basic" label="Country" variant="outlined" />
+                                                    <div className="inputRounded">
+
+                                                        <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" onChange={e => setFirstName(e.target.value)} />
+                                                        <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={e => setLastName(e.target.value)} />
+                                                        <TextField id="outlined-basic" label="SSN" variant="outlined" />
+                                                        <TextField id="outlined-basic" label="OwnerShip %" name="ownerShip" variant="outlined" onChange={e => setOwnerShip(e.target.value)} />
+                                                        <TextField id="outlined-basic" label="Mailing Adress Line1" variant="outlined" />
+                                                        <TextField id="outlined-basic" label="Mailing Address Line2(Optional)" variant="outlined" />
+                                                        <TextField id="outlined-basic" label="City" variant="outlined" />
+                                                        <TextField id="outlined-basic" label="State" variant="outlined" />
+                                                        <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
+                                                        <TextField id="outlined-basic" label="Country" variant="outlined" />
+                                                    </div>
 
                                                     <Stack direction="column" alignItems="left" spacing={5}>
                                                         <label htmlFor="contained-button-file">
                                                             <Input accept="image/*" id="contained-button-file" multiple type="file" />
                                                             <Root>
-                                                                <Divider textAlign="left">Upload Required Documents</Divider>
+                                                                <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents</Divider>
 
 
                                                             </Root>
@@ -463,9 +566,29 @@ export default function CompanyInfo() {
                                                                         />
                                                                     </RadioGroup>
                                                                 </FormControl>
-                                                                <Button variant="contained" component="span">
+                                                                <Button style={{
+                                                                    borderRadius: 18,
+                                                                    minWidth: 160,
+                                                                    height: 35,
+                                                                    backgroundColor: "#008B8B",
+                                                                    marginRight: 20,
+                                                                }} variant="contained" component="span">
                                                                     Upload
+
                                                                 </Button>
+                                                            </Box>
+
+                                                            <Box sx={{ p: 2, m: 5, display: 'flex', justifyContent: 'space-between' }}>
+                                                                <Button style={{
+                                                                    borderRadius: 18,
+                                                                    minWidth: 160,
+                                                                    backgroundColor: "#008B8B",
+                                                                }} variant="contained" onClick={handleRemove} >Remove Beneficial Owner</Button>
+                                                                <Button variant="contained" onClick={handleSave} style={{
+                                                                    borderRadius: 18,
+                                                                    minWidth: 160,
+                                                                    backgroundColor: "#008B8B",
+                                                                }} >Save</Button>
 
                                                             </Box>
                                                         </label>
@@ -483,11 +606,7 @@ export default function CompanyInfo() {
 
 
 
-                                    <Box sx={{ p: 2, m: 5, display: 'flex', justifyContent: 'space-between' }}>
-                                        <Button variant="contained" onClick={handleRemove} >Remove Benificial Owner</Button>
-                                        <Button variant="contained" onClick={handleSave} >Save</Button>
 
-                                    </Box>
 
 
 
@@ -498,7 +617,10 @@ export default function CompanyInfo() {
 
 
 
-                                <Box textAlign='center' ><Button>+ Add Additional Benificial Owner</Button></Box>
+                                <Box textAlign='center' ><Button variant='outlined' style={{
+                                    borderRadius: 18,
+
+                                }} >+ Add Additional Beneficial Owner</Button></Box>
                             </Box>
 
                         }
@@ -506,9 +628,15 @@ export default function CompanyInfo() {
                         <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
 
                             <Button
-                                disabled={activeStep === 0}
+                                //disabled={activeStep === 0}
                                 color="primary"
                                 variant="contained"
+                                style={{
+                                    borderRadius: 18,
+                                    minWidth: 160,
+                                    backgroundColor: "#008B8B",
+
+                                }}
 
                                 onClick={handleBack}
                                 className={classes.button}
@@ -516,11 +644,18 @@ export default function CompanyInfo() {
                                 Back
                             </Button>
                             <Button
+
                                 variant="contained"
                                 color="primary"
                                 onClick={handleNext}
                                 className={classes.button}
-                            >
+                                style={{
+                                    borderRadius: 18,
+                                    minWidth: 160,
+                                    backgroundColor: "#008B8B",
+                                }} >
+
+
                                 {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                             </Button>
 
