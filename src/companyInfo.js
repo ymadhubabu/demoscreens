@@ -8,8 +8,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import PropTypes from "prop-types";
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
-import { styled } from '@mui/material/styles';
 import Divider from '@mui/material/Divider';
 
 import Box from '@mui/material/Box';
@@ -47,7 +47,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { withStyles } from "@material-ui/core/styles";
 import { color } from '@mui/system';
 import { StylesContext } from '@material-ui/styles';
-
+import Avatar from '@mui/material/Avatar';
+import NotificationNetworkCheck from 'material-ui/svg-icons/notification/network-check';
+import AddBusinessOutlinedIcon from '@mui/icons-material/AddBusinessOutlined';
+import StepConnector from "@material-ui/core/StepConnector";
 
 const businessentity = [
     {
@@ -73,73 +76,124 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            width: '100%',
-        },
-        button: {
-            marginTop: theme.spacing(1),
-            marginRight: theme.spacing(1),
-        },
-        actionsContainer: {
-            marginBottom: theme.spacing(2),
-        },
-        resetContainer: {
-            padding: theme.spacing(3),
-        },
-        stepIconRoot: {
-            color: "pink",
-            "&.MuiStepIcon-active": {
-                color: "red"
-            },
-            "&.MuiStepIcon-completed": {
-                color: "green"
-            }
-        },
-        radio: {
-            colorPrimary: {
-                '&$checked': {
-                    color: 'teal'
-                }
-            },
-            checked: {},
-        }
-
-    }),
-);
-
-// const styles = theme => ({
-//     root: {
-//         width: '100%',
-//     },
-//     stepIconRoot: {
-//         color: "pink",
-//         "&.MuiStepIcon-active": {
-//             color: "red"
+// const useStyles = makeStyles((theme: Theme) =>
+//     createStyles({
+//         root: {
+//             width: '100%',
 //         },
-//         "&.MuiStepIcon-completed": {
-//             color: "green"
-//         }
-//     },
-//     radio: {
-//         colorPrimary: {
-//             '&$checked': {
-//                 color: 'blue'
+//         button: {
+//             marginTop: theme.spacing(1),
+//             marginRight: theme.spacing(1),
+//         },
+//         actionsContainer: {
+//             marginBottom: theme.spacing(2),
+//         },
+//         resetContainer: {
+//             padding: theme.spacing(3),
+//         },
+//         stepIconRoot: {
+//             color: "#008B8B",
+//             "&.Mui-active": {
+//                 color: "#008B8B"
+//             },
+//             "&.Mui-completed": {
+//                 color: "#008B8B"
 //             }
 //         },
-//         checked: {},
-//     }
-// });
+//         radio: {
+//             colorPrimary: {
+//                 '&$checked': {
+//                     color: '#008B8B'
+//                 }
+//             },
+//             checked: {},
+//         }
+
+//     }),
+// );
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+    },
+    stepIconRoot: {
+        color: "#008B8B",
+        "&.MuiStepIcon-active": {
+            color: "#008B8B"
+        },
+        "&.MuiStepIcon-completed": {
+            color: "#008B8B"
+        }
+    },
+    radio: {
+        colorPrimary: {
+            '&$checked': {
+                color: '#008B8B'
+            }
+        },
+        checked: {},
+    }
+});
 
 function getSteps() {
     return [<b >Company Information</b>,
     <b>Beneficial Owner(s)</b>,
     ];
 }
+// const theme = createTheme({
+//     components: {
+//         MuiDiv: {
+//             styleOverrides: {
 
+//                 MuiStepIcon: {
+//                     root: {
+//                         color: "red",
 
-export default function CompanyInfo() {
+//                         "&$active": {
+//                             color: "teal"
+//                         },
+
+//                         "&$completed": {
+//                             color: "#C4E90C"
+//                         }
+//                     },
+//                 }
+//             }
+//         }
+//     }
+// })
+
+// const Div = styled("div", {
+//     name: "MuiDiv",
+//     overridesResolver: (props, styles) => {
+//         return [styles.root];
+//     }
+// })();
+
+const QontoConnector = withStyles({
+    alternativeLabel: {
+        top: 10,
+        left: "calc(-50% + 16px)",
+        right: "calc(50% + 16px)"
+    },
+    active: {
+        "& $line": {
+            borderColor: "#F36633"
+        }
+    },
+    completed: {
+        "& $line": {
+            borderColor: "#F36633"
+        }
+    },
+    line: {
+        borderColor: "#BBBBBB",
+        borderTopWidth: 3,
+        borderRadius: 1
+    }
+})(StepConnector);
+
+function CompanyInfo() {
 
 
     const [expanded, setExpanded] = React.useState(false);
@@ -165,7 +219,7 @@ export default function CompanyInfo() {
     const [ownerShip, setOwnerShip] = React.useState("");
     const firstRender = useRef(true);
 
-    const classes = useStyles();
+    const classes = styles();
 
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -184,12 +238,19 @@ export default function CompanyInfo() {
 
         let regEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-
         if (email === "") {
             newErrors.email = 'Email is required'
         }
-        else if (!regEmail.test.email) {
+        else if (!regEmail.test(email)) {
             newErrors.email = 'Email is invalid'
+        }
+
+        let regPhone = /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/;
+        if (phoneNumber === "") {
+            newErrors.phoneNumber = 'Phone number is required'
+        }
+        else if (!regPhone.test(phoneNumber)) {
+            newErrors.phoneNumber = 'Phone number is invalid'
         }
 
         if (phoneNumber === "") {
@@ -268,9 +329,20 @@ export default function CompanyInfo() {
         <Paper sx={{ display: "flex", height: '100%', width: '100%' }}>
 
             <Paper sx={{ p: 5, width: '15%' }} >
+                <Box sx={{ m: 10 }}>
 
+                    <AddBusinessOutlinedIcon sx={{ fontSize: 100 }} />
 
-                <Box sx={{ bgcolor: 'background.paper' }}>
+                    <h2 style={{}}> New Business Name </h2>
+
+                    {/* <Avatar
+                        alt="My React"
+                        src="/static/images/avatar/1.jpg"
+                        sx={{ p: 5, marginLeft: 5, width: 56, height: 56 }}
+                    /> */}
+                </Box>
+
+                <Box sx={{ marginTop: 10, bgcolor: 'background.paper' }}>
                     <nav aria-label="main mailbox folders">
 
                         <List>
@@ -316,23 +388,35 @@ export default function CompanyInfo() {
                             >
                                 <div className={classes.root}>
                                     <h4>Business Application</h4>
-                                    <Stepper activeStep={activeStep} orientation="vertical">
+
+                                    <Stepper activeStep={activeStep} orientation="vertical" >
                                         {steps.map((label, index) => (
                                             <Step key={label}>
+
                                                 <StepLabel StepIconProps={{
                                                     classes: {
                                                         root: classes.stepIconRoot,
                                                         active: classes.stepIconActive,
                                                         completed: classes.stepIconCompleted
                                                     }
-                                                }}>
-                                                    {label}</StepLabel>
+                                                }}
+                                                >
+
+
+                                                    {label}
+
+                                                </StepLabel>
+
+
 
                                             </Step>
+
                                         ))}
                                     </Stepper>
 
                                 </div>
+
+
                             </Box>
 
                         </div>
@@ -359,7 +443,8 @@ export default function CompanyInfo() {
 
 
                                     <div className="inputRounded">
-                                        <TextField id="outlined-basic" label="Company Name" variant="outlined" onChange={e => setCompanyName(e.target.value)}
+                                        <TextField
+                                            id="outlined-basic" label="Company Name" variant="outlined" onChange={e => setCompanyName(e.target.value)}
                                             error={errors.companyName !== undefined} helperText={errors.companyName} />
                                         <TextField id="outlined-select-entity"
                                             select
@@ -420,8 +505,8 @@ export default function CompanyInfo() {
                                         <TextField id="outlined-basic" label="Country" variant="outlined"
                                             error={errors.country !== undefined} helperText={errors.country} onChange={e => setCountry(e.target.value)}
                                         />
-
                                     </div>
+
                                 </Box>
 
                                 <Box sx={{ p: 4 }}>
@@ -429,225 +514,65 @@ export default function CompanyInfo() {
                                         <label htmlFor="contained-button-file">
 
                                             <Input accept="image/*" id="contained-button-file" multiple type="file" />
+
                                             <Root>
-                                                <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents</Divider>
+
+
+                                                <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents
+                                                </Divider>
+                                                {/* <TextField className="inputRounded" id="outlined-basic" label="Company W-9" variant="outlined"
+                                                /> */}
 
 
                                             </Root>
                                             <Box sx={{ p: 2 }}>
                                                 <Button variant="contained" style={{
                                                     borderRadius: 18,
+                                                    // display: 'none',
                                                     minWidth: 160,
                                                     backgroundColor: "#008B8B",
                                                 }} component="span">
-                                                    Upload
+                                                    Company W-9
                                                 </Button>
                                             </Box>
+
                                         </label>
                                     </Stack>
                                 </Box>
+
                             </Box>
+
 
                         }
 
                         {activeStep === 1 &&
-                            <Box>
-
-
-                                {
-                                    beneficialOwner.length > 0 && <Paper>
-
-
-                                        <div>
-                                            <Accordion expanded={expanded === 'panel2'} onChange={handleChange1('panel2')}>
-                                                <AccordionSummary
-                                                    expandIcon={<ExpandMoreIcon />}
-                                                    aria-controls="panel1bh-content"
-                                                    id="panel1bh-header"
-                                                >
-                                                    {/* <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                                        <h4 style={{ color: '#008B8B' }}>Beneficial Owner</h4>
-                                                    </Typography> */}
-                                                </AccordionSummary>
-                                                <AccordionDetails>
-                                                    {beneficialOwner.map((item, index) => (
-
-                                                        <Paper sx={{ display: 'flex', justifyContent: 'space-between' }}>
-
-
-                                                            <h4 style={{ marginLeft: 20 }}>Beneficial Owner : {item.firstName} {item.lastName} </h4>
-                                                            <h4 style={{ marginRight: 20 }}> OwnerShip : {item.ownerShip}% </h4>
-                                                            {/* <tr data-index={index}>
-                                                    <td>{item.firstName}</td>
-                                                    <td>{item.lastName}</td>
-                                                    <td>{item.ownerShip}</td>
-                                                </tr> */}
-
-                                                        </Paper>
-                                                    ))}
-                                                </AccordionDetails>
-                                            </Accordion>
-                                        </div>
-                                    </Paper>
-                                }
-
-                                <Paper sx={{ marginTop: 5 }} >
-                                    <Box
-                                        component="form"
-                                        sx={{
-                                            '& .MuiTextField-root': { m: 2, width: '200' },
-                                        }}
-                                        noValidate
-                                        autoComplete="off"
-                                    >
-                                        {/* <h4>Beneficial Owner</h4> */}
-
-                                        <div>
-                                            <Accordion expanded={expanded === 'panel1'} onChange={handleChange1('panel1')}>
-                                                <AccordionSummary
-                                                    expandIcon={<ExpandMoreIcon />}
-                                                    aria-controls="panel1bh-content"
-                                                    id="panel1bh-header"
-                                                >
-                                                    <Typography sx={{ width: '33%', flexShrink: 0 }}>
-                                                        <h4 style={{ color: '#008B8B' }}>Beneficial Owner</h4>                                                    </Typography>
-                                                </AccordionSummary>
-                                                <AccordionDetails>
-                                                    <div className="inputRounded">
-
-                                                        <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" onChange={e => setFirstName(e.target.value)} />
-                                                        <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={e => setLastName(e.target.value)} />
-                                                        <TextField id="outlined-basic" label="SSN" variant="outlined" />
-                                                        <TextField id="outlined-basic" label="OwnerShip %" name="ownerShip" variant="outlined" onChange={e => setOwnerShip(e.target.value)} />
-                                                        <TextField id="outlined-basic" label="Mailing Adress Line1" variant="outlined" />
-                                                        <TextField id="outlined-basic" label="Mailing Address Line2(Optional)" variant="outlined" />
-                                                        <TextField id="outlined-basic" label="City" variant="outlined" />
-                                                        <TextField id="outlined-basic" label="State" variant="outlined" />
-                                                        <TextField id="outlined-basic" label="Zip Code" variant="outlined" />
-                                                        <TextField id="outlined-basic" label="Country" variant="outlined" />
-                                                    </div>
-
-                                                    <Stack direction="column" alignItems="left" spacing={5}>
-                                                        <label htmlFor="contained-button-file">
-                                                            <Input accept="image/*" id="contained-button-file" multiple type="file" />
-                                                            <Root>
-                                                                <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents</Divider>
-
-
-                                                            </Root>
-
-
-                                                            <Box sx={{ p: 4, display: 'flex', justifyContent: "space-between" }}>
-                                                                <FormControl>
-                                                                    <FormLabel id="demo-form-control-label-placement">Select Identification to Upload:</FormLabel>
-                                                                    <RadioGroup
-                                                                        row
-                                                                        aria-labelledby="demo-row-radio-buttons-group-label"
-                                                                        name="row-radio-buttons-group"
-                                                                        defaultValue="top"
-                                                                    >
-                                                                        <FormControlLabel
-                                                                            value="top"
-                                                                            control={<Radio />}
-                                                                            label="Driver's License"
-                                                                            labelPlacement="end"
-                                                                        />
-                                                                        <FormControlLabel
-                                                                            value="end"
-                                                                            control={<Radio />}
-                                                                            label="State-Issued ID"
-                                                                            labelPlacement="end"
-                                                                        />
-                                                                        <FormControlLabel
-                                                                            value="side"
-                                                                            control={<Radio />}
-                                                                            label="PassPort"
-                                                                            labelPlacement="end"
-                                                                        />
-                                                                    </RadioGroup>
-                                                                </FormControl>
-                                                                <Button style={{
-                                                                    borderRadius: 18,
-                                                                    minWidth: 160,
-                                                                    height: 35,
-                                                                    backgroundColor: "#008B8B",
-                                                                    marginRight: 20,
-                                                                }} variant="contained" component="span">
-                                                                    Upload
-
-                                                                </Button>
-                                                            </Box>
-
-                                                            <Box sx={{ p: 2, m: 5, display: 'flex', justifyContent: 'space-between' }}>
-                                                                <Button style={{
-                                                                    borderRadius: 18,
-                                                                    minWidth: 160,
-                                                                    backgroundColor: "#008B8B",
-                                                                }} variant="contained" onClick={handleRemove} >Remove Beneficial Owner</Button>
-                                                                <Button variant="contained" onClick={handleSave} style={{
-                                                                    borderRadius: 18,
-                                                                    minWidth: 160,
-                                                                    backgroundColor: "#008B8B",
-                                                                }} >Save</Button>
-
-                                                            </Box>
-                                                        </label>
-
-
-                                                    </Stack>
-                                                </AccordionDetails>
-                                            </Accordion>
-                                        </div>
-
-
-                                    </Box>
-
-
-
-
-
-
-
-
-
-
-
-                                </Paper>
-
-
-
-
-                                <Box textAlign='center' ><Button variant='outlined' style={{
-                                    borderRadius: 18,
-
-                                }} >+ Add Additional Beneficial Owner</Button></Box>
-                            </Box>
-
+                            <BeneficialOwner />
                         }
 
                         <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
 
                             <Button
-                                //disabled={activeStep === 0}
+                                disabled={activeStep === 0}
                                 color="primary"
                                 variant="contained"
                                 style={{
                                     borderRadius: 18,
                                     minWidth: 160,
                                     backgroundColor: "#008B8B",
-
+                                    color: "white"
                                 }}
 
                                 onClick={handleBack}
                                 className={classes.button}
                             >
-                                Back
+                                {activeStep === steps.length - 1 ? 'Back' : 'Cancel'}
                             </Button>
                             <Button
 
                                 variant="contained"
                                 color="primary"
                                 onClick={handleNext}
+
                                 className={classes.button}
                                 style={{
                                     borderRadius: 18,
@@ -672,3 +597,9 @@ export default function CompanyInfo() {
 
     );
 }
+CompanyInfo.propTypes = {
+    classes: PropTypes.object
+};
+
+export default withStyles(styles)(CompanyInfo);
+
