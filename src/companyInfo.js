@@ -51,6 +51,7 @@ import Avatar from '@mui/material/Avatar';
 import NotificationNetworkCheck from 'material-ui/svg-icons/notification/network-check';
 import AddBusinessOutlinedIcon from '@mui/icons-material/AddBusinessOutlined';
 import StepConnector from "@material-ui/core/StepConnector";
+import Activity from './activity';
 
 const businessentity = [
     {
@@ -73,7 +74,7 @@ const Root = styled('div')(({ theme }) => ({
     ...theme.typography.body2,
     '& > :not(style) + :not(style)': {
         marginTop: theme.spacing(2),
-    },
+    }
 }));
 
 // const useStyles = makeStyles((theme: Theme) =>
@@ -217,6 +218,7 @@ function CompanyInfo() {
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [ownerShip, setOwnerShip] = React.useState("");
+    const [navigation, setNavigation] = React.useState(0);
     const firstRender = useRef(true);
 
     const classes = styles();
@@ -328,12 +330,12 @@ function CompanyInfo() {
 
         <Paper sx={{ display: "flex", height: '100%', width: '100%' }}>
 
-            <Paper sx={{ p: 5, width: '15%' }} >
-                <Box sx={{ m: 10 }}>
+            <Paper sx={{ p: 6, width: '15%' }} >
+                <Box sx={{ marginLeft: 5 }}>
 
-                    <AddBusinessOutlinedIcon sx={{ fontSize: 100 }} />
+                    <AddBusinessOutlinedIcon sx={{ marginLeft: 6, fontSize: 50 }} />
 
-                    <h2 style={{}}> New Business Name </h2>
+                    <h4 style={{}}> New Business Name </h4>
 
                     {/* <Avatar
                         alt="My React"
@@ -347,7 +349,7 @@ function CompanyInfo() {
 
                         <List>
                             <ListItem disablePadding>
-                                <ListItemButton>
+                                <ListItemButton onClick={() => { setNavigation(0) }}>
                                     <ListItemIcon>
                                         <DynamicFormOutlinedIcon />
                                     </ListItemIcon>
@@ -355,7 +357,7 @@ function CompanyInfo() {
                                 </ListItemButton>
                             </ListItem>
                             <ListItem disablePadding>
-                                <ListItemButton>
+                                <ListItemButton onClick={() => { setNavigation(1) }} >
                                     <ListItemIcon>
                                         < LocalActivityOutlinedIcon />
                                     </ListItemIcon>
@@ -367,229 +369,237 @@ function CompanyInfo() {
                 </Box>
             </Paper>
 
-            <Paper sx={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
-                <Paper sx={{ marginLeft: 5, marginBottom: 2, marginTop: 2 }}>
-                    <div style={{ marginLeft: 20 }}><h4>Welcome to</h4></div>
-                </Paper>
-
-                <Paper sx={{ display: 'flex', flexDirection: 'row' }}>
-                    <Paper sx={{ p: 2, marginLeft: 5, width: '20%', flexGrow: 1 }}>
-
-
-
-                        <div className={classes.actionsContainer}>
-
-
-                            <Box
-                                component="form"
-                                sx={{ bgcolor: 'background.paper' }}
-                                noValidate
-                                autoComplete="off"
-                            >
-                                <div className={classes.root}>
-                                    <h4>Business Application</h4>
-
-                                    <Stepper activeStep={activeStep} orientation="vertical" >
-                                        {steps.map((label, index) => (
-                                            <Step key={label}>
-
-                                                <StepLabel StepIconProps={{
-                                                    classes: {
-                                                        root: classes.stepIconRoot,
-                                                        active: classes.stepIconActive,
-                                                        completed: classes.stepIconCompleted
-                                                    }
-                                                }}
-                                                >
-
-
-                                                    {label}
-
-                                                </StepLabel>
-
-
-
-                                            </Step>
-
-                                        ))}
-                                    </Stepper>
-
-                                </div>
-
-
-                            </Box>
-
-                        </div>
-
+            {
+                navigation === 0 && <Paper sx={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
+                    <Paper sx={{ marginLeft: 5, marginBottom: 2, marginTop: 2 }}>
+                        <div style={{ marginLeft: 20 }}><h4>Welcome to</h4></div>
                     </Paper>
 
+                    <Paper sx={{ display: 'flex', flexDirection: 'row' }}>
+                        <Paper sx={{ p: 2, marginLeft: 5, width: '20%', flexGrow: 1 }}>
 
-                    <Paper sx={{ p: 5, width: '80%', flexGrow: 1 }} >
 
-                        {activeStep === 0 &&
-                            <Box>
+
+                            <div className={classes.actionsContainer}>
+
+
                                 <Box
-
-
                                     component="form"
-                                    sx={{
-
-                                        '& .MuiTextField-root': { m: 1, width: '200' },
-                                    }}
+                                    sx={{ bgcolor: 'background.paper' }}
                                     noValidate
                                     autoComplete="off"
                                 >
-                                    <h4 style={{ color: '#008B8B' }}>Company Information </h4>
+                                    <div className={classes.root}>
+                                        <h4>Business Application</h4>
+
+                                        <Stepper activeStep={activeStep} orientation="vertical" >
+                                            {steps.map((label, index) => (
+                                                <Step key={label}>
+
+                                                    <StepLabel StepIconProps={{
+                                                        classes: {
+                                                            root: classes.stepIconRoot,
+                                                            active: classes.stepIconActive,
+                                                            completed: classes.stepIconCompleted
+                                                        }
+                                                    }}
+                                                    >
 
 
-                                    <div className="inputRounded">
-                                        <TextField
-                                            id="outlined-basic" label="Company Name" variant="outlined" onChange={e => setCompanyName(e.target.value)}
-                                            error={errors.companyName !== undefined} helperText={errors.companyName} />
-                                        <TextField id="outlined-select-entity"
-                                            select
-                                            label="Business Entity"
-                                            defaultValue="Sole Proprietorship/Single"
+                                                        {label}
 
-                                        >
-                                            {businessentity.map((option) => (
-                                                <MenuItem key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </MenuItem>
-                                            ))
-                                            }
+                                                    </StepLabel>
 
-                                        </TextField>
-                                        <FormControl>
 
-                                            <RadioGroup
-                                                row
-                                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                                name="row-radio-buttons-group"
-                                            >
-                                                <FormControlLabel value="SSN" control={<Radio disableRipple classes={{ colorPrimary: classes.radio }} size="small" />} label="SSN" />
-                                                <FormControlLabel value="EIN/TIN" control={<Radio disableRipple classes={{ colorPrimary: classes.radio }} size="small" />} label="EIN /TIN" />
 
-                                            </RadioGroup>
-                                        </FormControl>
-                                        <TextField id="outlined-basic" label="Company Email" variant="outlined"
-                                            error={errors.email !== undefined}
-                                            helperText={errors.email} onChange={e => setEmail(e.target.value)}
+                                                </Step>
 
-                                        />
+                                            ))}
+                                        </Stepper>
 
-                                        <TextField id="outlined-basic" label="Company Phone Number" variant="outlined"
-                                            error={errors.phoneNumber !== undefined} helperText={errors.phoneNumber} onChange={e => setPhoneNumber(e.target.value)}
-
-                                        />
-                                        <TextField name="companyAddressLine1" id="outlined-basic" label="Company Adress Line1" variant="outlined"
-                                            error={errors.addressLine1 !== undefined} helperText={errors.addressLine1} onChange={e => setAddressLine1(e.target.value)}
-
-                                        />
-
-                                        <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined"
-
-                                        />
-                                        <TextField id="outlined-basic" label="City" variant="outlined"
-                                            error={errors.city !== undefined} helperText={errors.city} onChange={e => setCity(e.target.value)}
-
-                                        />
-                                        <TextField id="outlined-basic" label="State" variant="outlined"
-                                            error={errors.state !== undefined} helperText={errors.state} onChange={e => setState(e.target.value)}
-
-                                        />
-                                        <TextField id="outlined-basic" label="Zip Code" variant="outlined"
-                                            error={errors.zipCode !== undefined} helperText={errors.zipCode} onChange={e => setZipCode(e.target.value)}
-
-                                        />
-                                        <TextField id="outlined-basic" label="Country" variant="outlined"
-                                            error={errors.country !== undefined} helperText={errors.country} onChange={e => setCountry(e.target.value)}
-                                        />
                                     </div>
+
 
                                 </Box>
 
-                                <Box sx={{ p: 4 }}>
-                                    <Stack direction="column" alignItems="left" spacing={5}>
-                                        <label htmlFor="contained-button-file">
+                            </div>
 
-                                            <Input accept="image/*" id="contained-button-file" multiple type="file" />
-
-                                            <Root>
+                        </Paper>
 
 
-                                                <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents
-                                                </Divider>
-                                                {/* <TextField className="inputRounded" id="outlined-basic" label="Company W-9" variant="outlined"
+                        <Paper sx={{ p: 5, width: '80%', flexGrow: 1 }} >
+
+                            {activeStep === 0 &&
+                                <Box>
+                                    <Box
+
+
+                                        component="form"
+                                        sx={{
+
+                                            '& .MuiTextField-root': { m: 1, width: '200' },
+                                        }}
+                                        noValidate
+                                        autoComplete="off"
+                                    >
+                                        <h4 style={{ color: '#008B8B' }}>Company Information </h4>
+
+
+                                        <div className="inputRounded">
+                                            <TextField
+                                                id="outlined-basic" label="Company Name" variant="outlined" onChange={e => setCompanyName(e.target.value)}
+                                                error={errors.companyName !== undefined} helperText={errors.companyName} />
+                                            <TextField id="outlined-select-entity"
+                                                select
+                                                label="Business Entity"
+                                                defaultValue="Sole Proprietorship/Single"
+
+                                            >
+                                                {businessentity.map((option) => (
+                                                    <MenuItem key={option.value} value={option.value}>
+                                                        {option.label}
+                                                    </MenuItem>
+                                                ))
+                                                }
+
+                                            </TextField>
+                                            <FormControl>
+
+                                                <RadioGroup
+                                                    row
+                                                    aria-labelledby="demo-row-radio-buttons-group-label"
+                                                    name="row-radio-buttons-group"
+                                                >
+                                                    <FormControlLabel value="SSN" control={<Radio disableRipple classes={{ colorPrimary: classes.radio }} size="small" />} label="SSN" />
+                                                    <FormControlLabel value="EIN/TIN" control={<Radio disableRipple classes={{ colorPrimary: classes.radio }} size="small" />} label="EIN /TIN" />
+
+                                                </RadioGroup>
+                                            </FormControl>
+                                            <TextField id="outlined-basic" label="Company Email" variant="outlined"
+                                                error={errors.email !== undefined}
+                                                helperText={errors.email} onChange={e => setEmail(e.target.value)}
+
+                                            />
+
+                                            <TextField id="outlined-basic" label="Company Phone Number" variant="outlined"
+                                                error={errors.phoneNumber !== undefined} helperText={errors.phoneNumber} onChange={e => setPhoneNumber(e.target.value)}
+
+                                            />
+                                            <TextField name="companyAddressLine1" id="outlined-basic" label="Company Adress Line1" variant="outlined"
+                                                error={errors.addressLine1 !== undefined} helperText={errors.addressLine1} onChange={e => setAddressLine1(e.target.value)}
+
+                                            />
+
+                                            <TextField id="outlined-basic" label="Company Address Line2(Optional)" variant="outlined"
+
+                                            />
+                                            <TextField id="outlined-basic" label="City" variant="outlined"
+                                                error={errors.city !== undefined} helperText={errors.city} onChange={e => setCity(e.target.value)}
+
+                                            />
+                                            <TextField id="outlined-basic" label="State" variant="outlined"
+                                                error={errors.state !== undefined} helperText={errors.state} onChange={e => setState(e.target.value)}
+
+                                            />
+                                            <TextField id="outlined-basic" label="Zip Code" variant="outlined"
+                                                error={errors.zipCode !== undefined} helperText={errors.zipCode} onChange={e => setZipCode(e.target.value)}
+
+                                            />
+                                            <TextField id="outlined-basic" label="Country" variant="outlined"
+                                                error={errors.country !== undefined} helperText={errors.country} onChange={e => setCountry(e.target.value)}
+                                            />
+                                        </div>
+
+                                    </Box>
+
+                                    <Box sx={{ p: 4 }}>
+                                        <Stack direction="column" alignItems="left" spacing={5}>
+                                            <label htmlFor="contained-button-file">
+
+                                                <Input accept="image/*" id="contained-button-file" multiple type="file" />
+
+                                                <Root>
+
+
+                                                    <Divider textAlign="left" style={{ color: '#008B8B' }}>Upload Required Documents
+                                                    </Divider>
+                                                    {/* <TextField className="inputRounded" id="outlined-basic" label="Company W-9" variant="outlined"
                                                 /> */}
 
 
-                                            </Root>
-                                            <Box sx={{ p: 2 }}>
-                                                <Button variant="contained" style={{
-                                                    borderRadius: 18,
-                                                    // display: 'none',
-                                                    minWidth: 160,
-                                                    backgroundColor: "#008B8B",
-                                                }} component="span">
-                                                    Company W-9
-                                                </Button>
-                                            </Box>
+                                                </Root>
+                                                <Box sx={{ p: 2 }}>
+                                                    <Button variant="contained" style={{
+                                                        borderRadius: 18,
+                                                        // display: 'none',
+                                                        minWidth: 160,
+                                                        backgroundColor: "#008B8B",
+                                                    }} component="span">
+                                                        Company W-9
+                                                    </Button>
+                                                </Box>
 
-                                        </label>
-                                    </Stack>
+                                            </label>
+                                        </Stack>
+                                    </Box>
+
                                 </Box>
+
+
+                            }
+
+                            {activeStep === 1 &&
+                                <BeneficialOwner />
+                            }
+
+                            <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
+
+                                <Button
+                                    disabled={activeStep === 0}
+                                    color="primary"
+                                    variant="contained"
+                                    style={{
+                                        borderRadius: 18,
+                                        minWidth: 160,
+                                        backgroundColor: "#008B8B",
+                                        color: "white"
+                                    }}
+
+                                    onClick={handleBack}
+                                    className={classes.button}
+                                >
+                                    {activeStep === steps.length - 1 ? 'Back' : 'Cancel'}
+                                </Button>
+                                <Button
+
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleNext}
+
+                                    className={classes.button}
+                                    style={{
+                                        borderRadius: 18,
+                                        minWidth: 160,
+                                        backgroundColor: "#008B8B",
+                                    }} >
+
+
+                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                </Button>
 
                             </Box>
 
 
-                        }
-
-                        {activeStep === 1 &&
-                            <BeneficialOwner />
-                        }
-
-                        <Box sx={{ p: 5, display: 'flex', justifyContent: 'space-between' }}>
-
-                            <Button
-                                disabled={activeStep === 0}
-                                color="primary"
-                                variant="contained"
-                                style={{
-                                    borderRadius: 18,
-                                    minWidth: 160,
-                                    backgroundColor: "#008B8B",
-                                    color: "white"
-                                }}
-
-                                onClick={handleBack}
-                                className={classes.button}
-                            >
-                                {activeStep === steps.length - 1 ? 'Back' : 'Cancel'}
-                            </Button>
-                            <Button
-
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-
-                                className={classes.button}
-                                style={{
-                                    borderRadius: 18,
-                                    minWidth: 160,
-                                    backgroundColor: "#008B8B",
-                                }} >
-
-
-                                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                            </Button>
-
-                        </Box>
-
-
+                        </Paper>
                     </Paper>
-                </Paper>
-            </Paper >
+                </Paper >
+            }
+
+            {
+                navigation === 1 && <Activity />
+            }
+
+
 
 
 
