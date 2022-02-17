@@ -113,6 +113,8 @@ export default function BeneficialOwner() {
     const [ownerShip, setOwnerShip] = React.useState("");
     const firstRender = useRef(true);
     const [addBenificial, setAddBenificial] = React.useState(false);
+    const [ownershipSum, setOwnershipSum] = React.useState(0);
+
 
     const classes = useStyles();
 
@@ -191,6 +193,9 @@ export default function BeneficialOwner() {
         }]);
         setAddBenificial(false);
 
+        setOwnershipSum(ownershipSum + parseInt(ownerShip));
+        console.log('ownership-sum --> ' + ownershipSum);
+
         console.log('benificial-owners --> ' + beneficialOwner);
     };
 
@@ -233,7 +238,7 @@ export default function BeneficialOwner() {
                                     id="panel1bh-header"
                                 >
                                     <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-                                        <h4 style={{ color: '#008B8B', marginLeft: 5 }}>Beneficial Owner : {item.firstName} {item.lastName} </h4>
+                                        <h4 style={{ color: '#008B8B', marginLeft: 5 }}>Beneficial Owner {index + 1} : {item.firstName} {item.lastName} </h4>
                                         <h4 style={{ color: '#008B8B', marginRight: 5 }}> OwnerShip : {item.ownerShip}% </h4>
                                     </Box>
 
@@ -280,7 +285,7 @@ export default function BeneficialOwner() {
                 </Paper>
             }
             {
-                addBenificial && <Paper sx={{ marginTop: 5 }} >
+                addBenificial && ownershipSum < 100 && <Paper sx={{ marginTop: 5 }} >
                     <Box
                         component="form"
                         sx={{
@@ -390,12 +395,17 @@ export default function BeneficialOwner() {
             }
 
 
+            {
+                ownershipSum < 100 &&
 
-            <Box textAlign='center' ><Button variant='outlined' style={{
-                marginTop: 10,
-                borderRadius: 18,
+                <Box textAlign='center' ><Button variant='outlined' style={{
+                    marginTop: 10,
+                    borderRadius: 18,
 
-            }} onClick={handleAddBenificial}>+ Add Additional Beneficial Owner</Button></Box>
+                }} onClick={handleAddBenificial}>+ Add Additional Beneficial Owner</Button></Box>
+
+            }
+
         </Box >
 
 
