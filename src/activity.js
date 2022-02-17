@@ -154,8 +154,8 @@ export default function Activity() {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    // const [open, setOpen] = React.useState(false);
+    //const open = Boolean(anchorEl);
+    const [open, setOpen] = React.useState(false);
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -164,33 +164,34 @@ export default function Activity() {
     };
 
     const [placement, setPlacement] = React.useState();
-    // const handleClick = (newPlacement) => (event) => {
+    const handleClick = (newPlacement) => (event) => {
+        setAnchorEl(event.currentTarget);
+        setOpen((prev) => placement !== newPlacement || !prev);
+        setPlacement(newPlacement);
+    };
+    // const handleClick = (event) => {
     //     setAnchorEl(event.currentTarget);
-    //     setOpen((prev) => placement !== newPlacement || !prev);
-    //     setPlacement(newPlacement);
     // };
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClickListItem = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
-        setAnchorEl(null);
-    };
-    const [value, setValue] = React.useState([null, null]);
+    // const handleClickListItem = (event) => {
+    //     setAnchorEl(event.currentTarget);
 
+    // };
+    // const handleClose = () => {
+    //     setAnchorEl(null);
+    // };
+    // const handleMenuItemClick = (event, index) => {
+    //     setSelectedIndex(5);
+    //     setAnchorEl(null);
+    // };
+    const [value, setValue] = React.useState([null, null]);
+    const [customDateRange, setCustomDateRange] = React.useState(false);
 
     return (
 
 
+        <Paper sx={{ marginLeft: 10, marginTop: 2, maxWidth: '60%', height: '100% ', flexGrow: 1 }} >
 
-        <Paper sx={{ p: 20, marginLeft: 40, marginTop: 10, marginRight: 1, width: '55%', flexGrow: 1 }} >
-            <h1 style={{ color: '#008B8B', marginBottom: 50 }}>Ecosystem Activity</h1>
+            <h1 style={{ marginLeft: 5, color: '#008B8B', marginBottom: 50 }}>Ecosystem Activity</h1>
 
 
 
@@ -198,56 +199,84 @@ export default function Activity() {
                 <Chip sx={{
                     color: "black",
                     bgcolor: '#b2d8d8',
+                    marginLeft: 1
                 }} label="Activity Dashboard" />
             </Stack>
 
             <div>
-                <List
-                    component="nav"
-                    aria-label="Device settings"
-                    sx={{ bgcolor: 'background.paper' }}
-                >
-                    <ListItem
-                        button
-                        id="lock-button"
-                        aria-haspopup="listbox"
-                        aria-controls="lock-menu"
-                        aria-label="Today"
-                        aria-expanded={open ? 'true' : undefined}
-                        onClick={handleClickListItem}
+                <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1bh-content"
+                        id="panel1bh-header"
                     >
-                        <ListItemText
-                            secondary={options[selectedIndex]}
-                        />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="lock-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                        'aria-labelledby': 'lock-button',
-                        role: 'listbox',
-                    }}
-                >
-                    {options.map((option, index) => (
-                        <MenuItem
-                            key={option}
-                            // disabled={index === 0}
-                            selected={index === selectedIndex}
-                            onClick={(event) => handleMenuItemClick(event, index)}
-                        >
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
+
+                        <Typography sx={{ color: 'text.secondary' }}>Today</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Box sx={{ width: 500 }}>
+                            <Popper open={open} anchorEl={anchorEl} placement={placement} transition>
+                                {({ TransitionProps }) => (
+                                    <Fade {...TransitionProps} timeout={350}>
+                                        <Paper>
 
 
+                                            <Typography>
 
+                                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                                    <StaticDateRangePicker
+                                                        displayStaticWrapperAs="desktop"
+                                                        value={value}
+                                                        onChange={(newValue) => {
+                                                            setValue(newValue);
+                                                        }}
+                                                        renderInput={(startProps, endProps) => (
+                                                            <React.Fragment>
+                                                                <TextField {...startProps} />
+                                                                <Box sx={{ mx: 2 }}> to </Box>
+                                                                <TextField {...endProps} />
+                                                            </React.Fragment>
+                                                        )}
+                                                    />
+                                                </LocalizationProvider>
+                                            </Typography>
+                                        </Paper>
+                                    </Fade>
+                                )}
+                            </Popper>
+                            <Grid container justifyContent="center">
+                                <ListItemText>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Today</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Yesterday</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Last 7 days</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Month to Date</Button>
+                                    </Grid>
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Last Month</Button>
+                                    </Grid>
 
+                                    <Grid item>
+                                        <Button onClick={handleClick('bottom-end')}>Custom Date Range</Button>
+                                    </Grid>
+                                </ListItemText>
+                            </Grid>
+                        </Box>
+                    </AccordionDetails>
+                </Accordion>
 
             </div>
+
+
+
+
+
 
 
 
@@ -284,7 +313,7 @@ export default function Activity() {
                         </Table>
                     </Box >
                     <Box sx={{ width: '100%' }}>
-                        <Table sx={{ minWidth: 450 }} aria-label="simple table">
+                        <Table sx={{ maxWidth: 550 }} aria-label="simple table">
 
                             <TableHead>
                                 <TableRow>
@@ -314,11 +343,11 @@ export default function Activity() {
                 </Box>
             </TableContainer>
             <h1 style={{ color: '#008B8B', marginTop: 50 }}>API Call History</h1>
-            <Paper sx={{ p: 5, height: 250, marginLeft: 2, marginTop: 1, width: '100 %', flexGrow: 1 }} >
-                <Box sx={{ paddingbottom: 40, }}><h4 style={{ color: '#008B8B' }}>API Calls
+            <Paper sx={{ height: 250, width: '100%', flexGrow: 1, display: 'flex', justifyContent: 'space-between' }} >
+                <Box sx={{ paddingLeft: 20, paddingbottom: 40, }}><h4 style={{ color: '#008B8B' }}>API Calls
                     <p><h1 style={{ color: 'black' }}>17,889,208</h1></p></h4>
                 </Box>
-                <Box sx={{ paddingLeft: 40, paddingBottom: 50 }} >
+                <Box sx={{ paddingRight: 50, }} >
                     <Table sx={{ minWidth: 250 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
