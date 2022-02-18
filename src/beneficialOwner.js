@@ -208,6 +208,16 @@ export default function BeneficialOwner() {
 
     };
 
+    const handleUpdate = (id) => {
+        let tempBen = [...beneficialOwner];
+        tempBen[id] = {
+            firstName: firstName,
+            lastName: lastName,
+            ownerShip: ownerShip
+        };
+        setBeneficialOwner(tempBen);
+    }
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -252,7 +262,7 @@ export default function BeneficialOwner() {
                                         noValidate
                                         autoComplete="off"
                                     >
-                                        <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" value={item.firstName} onChange={e => setFirstName(e.target.value)} />
+                                        <TextField id="outlined-basic" label="First Name" name="firstName" variant="outlined" defaultValue={item.firstName} onChange={e => setFirstName(e.target.value)} />
                                         <TextField id="outlined-basic" label="Last Name" name="lastName" variant="outlined" onChange={e => setLastName(e.target.value)} />
                                         <TextField id="outlined-basic" label="SSN" variant="outlined" />
                                         <TextField id="outlined-basic" label="OwnerShip %" name="ownerShip" variant="outlined" onChange={e => setOwnerShip(e.target.value)} />
@@ -270,7 +280,7 @@ export default function BeneficialOwner() {
                                             minWidth: 160,
                                             backgroundColor: "#008B8B",
                                         }} variant="contained" onClick={() => handleRemove(index)} >Remove Beneficial Owner</Button>
-                                        <Button variant="contained" onClick={handleSave} style={{
+                                        <Button variant="contained" onClick={() => handleUpdate(index)} style={{
                                             borderRadius: 18,
                                             minWidth: 160,
                                             backgroundColor: "#008B8B",
